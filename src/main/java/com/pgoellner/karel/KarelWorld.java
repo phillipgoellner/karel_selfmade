@@ -28,10 +28,15 @@ public class KarelWorld extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D drawer = (Graphics2D) g;
 
-
+        paintBackgroundWhite(drawer);
         fillFieldWithDots(drawer);
         drawKarel(new Coordinates(4, 4), drawer);
         drawCoordinateBox(drawer);
+    }
+
+    private void paintBackgroundWhite(Graphics2D drawer) {
+        drawer.setColor(Color.WHITE);
+        drawer.fillRect(0, 0, getWidth(), getHeight());
     }
 
     private void fillFieldWithDots(Graphics2D drawer) {

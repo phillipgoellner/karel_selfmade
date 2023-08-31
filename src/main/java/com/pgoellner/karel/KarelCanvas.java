@@ -3,12 +3,12 @@ package com.pgoellner.karel;
 import javax.swing.*;
 import java.awt.*;
 
-public class KarelWorld extends JPanel {
+public class KarelCanvas extends JPanel {
     private final int fieldWidth;
     private final int fieldHeight;
     private final transient Karel karel;
 
-    public KarelWorld(Karel karel) {
+    public KarelCanvas(Karel karel) {
         this.karel = karel;
 
         this.fieldWidth = 9;

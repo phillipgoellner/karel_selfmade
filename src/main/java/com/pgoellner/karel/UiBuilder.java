@@ -16,7 +16,7 @@ final class UiBuilder {
         JPanel mainPanel = new JPanel();
         BorderLayout layout = new BorderLayout();
 
-        KarelWorld canvas = new KarelWorld(karel);
+        KarelCanvas canvas = new KarelCanvas(karel);
         layout.addLayoutComponent(canvas, BorderLayout.CENTER);
         mainPanel.add(canvas);
 

@@ -4,10 +4,13 @@ import javax.swing.*;
 
 public class Karel {
     private Coordinates currentLocation;
+    private Orientation currentOrientation;
+
     private JFrame updateTarget;
 
     public Karel() {
         currentLocation = new Coordinates(4, 4);
+        currentOrientation = Orientation.NORTH;
     }
 
     public static void main(String[] args) {
@@ -19,11 +22,16 @@ public class Karel {
     }
 
     public void run() {
-        move();
+        turnLeft();
     }
 
-    public void move() {
+    public final void move() {
         currentLocation = currentLocation.plusX();
+        updateTarget.repaint();
+    }
+
+    public final void turnLeft() {
+        currentOrientation = Orientation.rotateLeft(currentOrientation);
         updateTarget.repaint();
     }
 
@@ -33,5 +41,9 @@ public class Karel {
 
     int y() {
         return currentLocation.y;
+    }
+
+    Orientation facing() {
+        return this.currentOrientation;
     }
 }

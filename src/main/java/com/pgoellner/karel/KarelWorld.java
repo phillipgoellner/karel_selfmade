@@ -38,7 +38,7 @@ public class KarelWorld extends JPanel {
 
         paintBackgroundWhite(drawer);
         fillFieldWithDots(drawer);
-        drawKarel(new Coordinates(karel.x(), karel.y()), drawer);
+        drawKarel(new Coordinates(karel.x(), karel.y()), karel.facing(), drawer);
         drawCoordinateBox(drawer);
     }
 
@@ -60,17 +60,29 @@ public class KarelWorld extends JPanel {
         }
     }
 
-    private void drawKarel(Coordinates location, Graphics2D drawer) {
+    private void drawKarel(Coordinates location, Orientation orientation, Graphics2D drawer) {
         final int xOffset = scale(getWidth() - systemWidth(), 50);
         final int yOffset = scale(getHeight() - systemHeight(), 50);
 
+        int spriteTopY = (location.mirrorOnY(fieldHeight).y - 1) * spriteSide() + yOffset;
+        int spriteLeftX = (location.x - 1) * spriteSide() + xOffset;
+
         drawer.setColor(Color.RED);
         drawer.fillRect(
-                (location.x - 1) * spriteSide() + xOffset,
-                (location.mirrorOnY(fieldHeight).y - 1) * spriteSide() + yOffset,
+                spriteLeftX,
+                spriteTopY,
                 spriteSide(),
                 spriteSide()
         );
+
+
+        drawer.setColor(Color.BLACK);
+        switch (orientation) {
+            case EAST: drawer.drawLine(spriteLeftX + scale(spriteSide(), 50), spriteTopY + scale(spriteSide(), 50), spriteLeftX + spriteSide(), spriteTopY + scale(spriteSide(), 50)); break;
+            case SOUTH: drawer.drawLine(spriteLeftX + scale(spriteSide(), 50), spriteTopY + spriteSide(), spriteLeftX + scale(spriteSide(), 50), spriteTopY + scale(spriteSide(), 50)); break;
+            case WEST: drawer.drawLine(spriteLeftX, spriteTopY + scale(spriteSide(), 50), spriteLeftX + scale(spriteSide(), 50), spriteTopY + scale(spriteSide(), 50)); break;
+            default: drawer.drawLine(spriteLeftX + scale(spriteSide(), 50), spriteTopY, spriteLeftX + scale(spriteSide(), 50), spriteTopY + scale(spriteSide(), 50)); break;
+        }
     }
 
     private void drawCoordinateBox(Graphics2D drawer) {

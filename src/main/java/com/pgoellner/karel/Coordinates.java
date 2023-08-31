@@ -14,6 +14,10 @@ public class Coordinates {
         return new Coordinates(x, translatedY);
     }
 
+    public Coordinates plusX() {
+        return new Coordinates(x + 1, y);
+    }
+
     public String toString() {
         return String.format("(%d/%d)", x, y);
     }

@@ -4,8 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class KarelWorld extends JPanel {
-    private final int fieldWidth = 9;
-    private final int fieldHeight = 9;
+    private final int fieldWidth;
+    private final int fieldHeight;
+    private final transient Karel karel;
+
+    public KarelWorld(Karel karel) {
+        this.karel = karel;
+
+        this.fieldWidth = 9;
+        this.fieldHeight = 9;
+    }
 
     private int spriteSide() {
         int smallestSide = Math.min(getWidth(), getHeight());
@@ -30,7 +38,7 @@ public class KarelWorld extends JPanel {
 
         paintBackgroundWhite(drawer);
         fillFieldWithDots(drawer);
-        drawKarel(new Coordinates(4, 4), drawer);
+        drawKarel(new Coordinates(karel.x(), karel.y()), drawer);
         drawCoordinateBox(drawer);
     }
 

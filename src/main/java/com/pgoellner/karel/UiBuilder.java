@@ -48,7 +48,8 @@ class PlayButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!hasRun) {
-            program.run();
+            new Thread(program::run).start();
+
             hasRun = true;
         }
     }

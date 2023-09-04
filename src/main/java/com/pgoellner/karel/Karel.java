@@ -30,20 +30,34 @@ public class Karel {
         turnLeft();
         putBeeper();
         move();
+        putBeeper();
+        move();
+        putBeeper();
+        move();
     }
 
     public final void move() {
         currentLocation = currentLocation.plusX();
-        updateTarget.repaint();
+        renderUpdateAndPause();
     }
 
     public final void turnLeft() {
         currentOrientation = Orientation.rotateLeft(currentOrientation);
-        updateTarget.repaint();
+        renderUpdateAndPause();
     }
 
     public final void putBeeper() {
         world.putBeeper(currentLocation.minus(Coordinates.UNIT));
+        renderUpdateAndPause();
+    }
+
+    private void renderUpdateAndPause() {
+        try {
+            Thread.sleep(200L);
+        } catch (InterruptedException interruptedException) {
+            System.err.printf("Something really bad went wrong: %s%n", interruptedException);
+            System.err.println("Please get mad at the developer");
+        }
         updateTarget.repaint();
     }
 

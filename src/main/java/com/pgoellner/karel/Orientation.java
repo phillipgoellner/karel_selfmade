@@ -15,4 +15,13 @@ enum Orientation {
 
         return result;
     }
+
+    public static Orientation from(String orientationString) {
+        switch (orientationString) {
+            case "north": return NORTH;
+            case "east": return EAST;
+            case "south": return SOUTH;
+            default: return WEST;
+        }
+    }
 }

@@ -6,15 +6,20 @@ public class Karel {
     private Coordinates currentLocation;
     private Orientation currentOrientation;
 
+    private final World world;
+
     private JFrame updateTarget;
 
-    public Karel() {
+    public Karel(World world) {
         currentLocation = new Coordinates(4, 4);
         currentOrientation = Orientation.NORTH;
+
+        this.world = world;
     }
 
     public static void main(String[] args) {
-        UiBuilder.createWindow(new Karel());
+        World world = new World(9, 9);
+        UiBuilder.createWindow(new Karel(world), world);
     }
 
     void registerUpdateCallback(JFrame target) {
@@ -23,6 +28,8 @@ public class Karel {
 
     public void run() {
         turnLeft();
+        putBeeper();
+        move();
     }
 
     public final void move() {
@@ -32,6 +39,11 @@ public class Karel {
 
     public final void turnLeft() {
         currentOrientation = Orientation.rotateLeft(currentOrientation);
+        updateTarget.repaint();
+    }
+
+    public final void putBeeper() {
+        world.putBeeper(currentLocation.minus(Coordinates.UNIT));
         updateTarget.repaint();
     }
 

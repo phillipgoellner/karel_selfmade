@@ -37,7 +37,7 @@ public class Karel {
     }
 
     public final void move() {
-        currentLocation = currentLocation.plusX();
+        currentLocation = currentLocation.plus(direction());
         renderUpdateAndPause();
     }
 
@@ -71,5 +71,14 @@ public class Karel {
 
     Orientation facing() {
         return this.currentOrientation;
+    }
+
+    private Coordinates direction() {
+        switch (this.currentOrientation) {
+            case NORTH: return new Coordinates(0, 1);
+            case EAST: return new Coordinates(1, 0);
+            case SOUTH: return new Coordinates(0, -1);
+            default: return new Coordinates(-1, 0);
+        }
     }
 }

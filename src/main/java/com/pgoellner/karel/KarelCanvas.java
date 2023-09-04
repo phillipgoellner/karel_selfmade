@@ -2,6 +2,7 @@ package com.pgoellner.karel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class KarelCanvas extends JPanel {
     private final transient Karel karel;
@@ -45,6 +46,7 @@ public class KarelCanvas extends JPanel {
         fillFieldWithDots(drawer);
         drawBeepers(drawer);
         drawKarel(new Coordinates(karel.x(), karel.y()), karel.facing(), drawer);
+        drawWalls(world.allWalls(), drawer);
         drawCoordinateBox(drawer);
     }
 
@@ -106,35 +108,83 @@ public class KarelCanvas extends JPanel {
     }
 
     private void drawKarel(Coordinates location, Orientation orientation, Graphics2D drawer) {
-        final int xOffset = scale(getWidth() - systemWidthPx(), 50);
-        final int yOffset = scale(getHeight() - systemHeightPx(), 50);
-
-        int spriteTopY = (location.mirrorOnY(fieldHeight()).y - 1) * spriteSide() + yOffset;
-        int spriteLeftX = (location.x - 1) * spriteSide() + xOffset;
+        final FieldCorners corners = getRenderCorners(location.mirrorOnY(fieldHeight()).minus(Coordinates.UNIT));
+        final Coordinates topLeftCorner = corners.topLeft;
 
         drawer.setColor(Color.RED);
         drawer.fillRect(
-                spriteLeftX + scale(spriteSide(), 10),
-                spriteTopY + scale(spriteSide(), 10),
+                topLeftCorner.x + scale(spriteSide(), 10),
+                topLeftCorner.y + scale(spriteSide(), 10),
                 scale(spriteSide(), 80),
                 scale(spriteSide(), 80)
         );
 
-
         drawer.setColor(Color.BLACK);
         switch (orientation) {
             case EAST:
-                drawer.drawLine(spriteLeftX + scale(spriteSide(), 50), spriteTopY + scale(spriteSide(), 50), spriteLeftX + spriteSide(), spriteTopY + scale(spriteSide(), 50));
+                drawer.drawLine(topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50), topLeftCorner.x + spriteSide(), topLeftCorner.y + scale(spriteSide(), 50));
                 break;
             case SOUTH:
-                drawer.drawLine(spriteLeftX + scale(spriteSide(), 50), spriteTopY + spriteSide(), spriteLeftX + scale(spriteSide(), 50), spriteTopY + scale(spriteSide(), 50));
+                drawer.drawLine(topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + spriteSide(), topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50));
                 break;
             case WEST:
-                drawer.drawLine(spriteLeftX, spriteTopY + scale(spriteSide(), 50), spriteLeftX + scale(spriteSide(), 50), spriteTopY + scale(spriteSide(), 50));
+                drawer.drawLine(topLeftCorner.x, topLeftCorner.y + scale(spriteSide(), 50), topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50));
                 break;
             default:
-                drawer.drawLine(spriteLeftX + scale(spriteSide(), 50), spriteTopY, spriteLeftX + scale(spriteSide(), 50), spriteTopY + scale(spriteSide(), 50));
+                drawer.drawLine(topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y, topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50));
                 break;
+        }
+    }
+
+    private void drawWalls(List<WallLocation> walls, Graphics2D drawer) {
+        drawer.setColor(Color.BLACK);
+
+        for (WallLocation wall : walls) {
+            final FieldCorners renderCorners = getRenderCorners(wall.coordinates.mirrorOnY(world.yDimension()).minus(Coordinates.UNIT));
+
+            final Coordinates topLeft = renderCorners.topLeft;
+            final Coordinates topRight = renderCorners.topRight;
+            final Coordinates bottomLeft = renderCorners.bottomLeft;
+            final Coordinates bottomRight = renderCorners.bottomRight;
+
+            switch (wall.orientation) {
+                case NORTH: {
+                    drawer.drawLine(
+                            topLeft.x,
+                            topLeft.y,
+                            topRight.x,
+                            topRight.y
+                    );
+                    break;
+                }
+                case EAST: {
+                    drawer.drawLine(
+                            topRight.x,
+                            topRight.y,
+                            bottomRight.x,
+                            bottomRight.y
+                    );
+                    break;
+                }
+                case SOUTH: {
+                    drawer.drawLine(
+                            bottomLeft.x,
+                            bottomLeft.y,
+                            bottomRight.x,
+                            bottomRight.y
+                    );
+                    break;
+                }
+                default: {
+                    drawer.drawLine(
+                            topLeft.x,
+                            topLeft.y,
+                            bottomLeft.x,
+                            bottomLeft.y
+                    );
+                    break;
+                }
+            }
         }
     }
 
@@ -166,5 +216,34 @@ public class KarelCanvas extends JPanel {
                     y * spriteSide() + heightMargin + scale(spriteSide(), 50) + 3
             );
         }
+    }
+
+    private FieldCorners getRenderCorners(Coordinates atWorldPosition) {
+        final int xOffset = scale(getWidth() - systemWidthPx(), 50);
+        final int yOffset = scale(getHeight() - systemHeightPx(), 50);
+
+        int spriteLeftX = atWorldPosition.x * spriteSide() + xOffset;
+        int spriteTopY = atWorldPosition.y * spriteSide() + yOffset;
+
+        return new FieldCorners(
+                new Coordinates(spriteLeftX, spriteTopY),
+                new Coordinates(spriteLeftX + spriteSide(), spriteTopY),
+                new Coordinates(spriteLeftX, spriteTopY + spriteSide()),
+                new Coordinates(spriteLeftX + spriteSide(), spriteTopY + spriteSide())
+        );
+    }
+}
+
+class FieldCorners {
+    public final Coordinates topLeft;
+    public final Coordinates topRight;
+    public final Coordinates bottomLeft;
+    public final Coordinates bottomRight;
+
+    FieldCorners(Coordinates topLeft, Coordinates topRight, Coordinates bottomLeft, Coordinates bottomRight) {
+        this.topLeft = topLeft;
+        this.topRight = topRight;
+        this.bottomLeft = bottomLeft;
+        this.bottomRight = bottomRight;
     }
 }

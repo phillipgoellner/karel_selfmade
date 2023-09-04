@@ -18,7 +18,7 @@ public class Karel {
     }
 
     public static void main(String[] args) {
-        World world = new World(9, 9);
+        World world = new World(14, 14);
         UiBuilder.createWindow(new Karel(world), world);
     }
 

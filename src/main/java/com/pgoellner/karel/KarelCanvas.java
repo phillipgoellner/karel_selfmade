@@ -114,10 +114,10 @@ public class KarelCanvas extends JPanel {
 
         drawer.setColor(Color.RED);
         drawer.fillRect(
-                spriteLeftX,
-                spriteTopY,
-                spriteSide(),
-                spriteSide()
+                spriteLeftX + scale(spriteSide(), 10),
+                spriteTopY + scale(spriteSide(), 10),
+                scale(spriteSide(), 80),
+                scale(spriteSide(), 80)
         );
 
 

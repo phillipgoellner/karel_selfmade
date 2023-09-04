@@ -18,7 +18,7 @@ public class Karel {
     }
 
     public static void main(String[] args) {
-        World world = new World(14, 14);
+        World world = new WorldFileParser().fromDescription();
         UiBuilder.createWindow(new Karel(world), world);
     }
 

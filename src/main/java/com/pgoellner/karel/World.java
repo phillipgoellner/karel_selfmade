@@ -7,19 +7,13 @@ public final class World {
     private final int[][] beeperPlacements;
     private final List<WallLocation> walls;
 
-    World(int x, int y) {
+    World(int x, int y, List<WallLocation> walls, List<Coordinates> beepers) {
         this.beeperPlacements = new int[x][y];
-        this.beeperPlacements[0][0]++;
 
-        walls = new ArrayList<>();
-        walls.add(new WallLocation(new Coordinates(1, 8), Orientation.SOUTH));
-        walls.add(new WallLocation(new Coordinates(7, 8), Orientation.SOUTH));
-        walls.add(new WallLocation(new Coordinates(8, 1), Orientation.WEST));
-        walls.add(new WallLocation(new Coordinates(8, 7), Orientation.WEST));
-        walls.add(new WallLocation(new Coordinates(8, 8), Orientation.WEST));
-        walls.add(new WallLocation(new Coordinates(8, 8), Orientation.SOUTH));
-        walls.add(new WallLocation(new Coordinates(8, 14), Orientation.WEST));
-        walls.add(new WallLocation(new Coordinates(14, 8), Orientation.SOUTH));
+        this.walls = walls;
+        for (Coordinates beeperLocation : beepers) {
+            this.beeperPlacements[beeperLocation.x][beeperLocation.y]++;
+        }
     }
 
     int xDimension() {

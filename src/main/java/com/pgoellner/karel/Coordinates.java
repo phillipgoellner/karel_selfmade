@@ -1,6 +1,7 @@
 package com.pgoellner.karel;
 
 public class Coordinates {
+    public static final Coordinates UNIT = new Coordinates(1, 1);
     public final int x;
     public final int y;
 
@@ -16,6 +17,14 @@ public class Coordinates {
 
     public Coordinates plusX() {
         return new Coordinates(x + 1, y);
+    }
+
+    public Coordinates plus(Coordinates summend) {
+        return new Coordinates(x + summend.x, y + summend.y);
+    }
+
+    public Coordinates minus(Coordinates minuend) {
+        return new Coordinates(x - minuend.x, y - minuend.y);
     }
 
     public String toString() {

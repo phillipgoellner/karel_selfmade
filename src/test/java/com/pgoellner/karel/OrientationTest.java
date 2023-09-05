@@ -24,6 +24,22 @@ class OrientationTest {
                 Arguments.of(Orientation.WEST, Orientation.SOUTH)
         );
     }
+    @ParameterizedTest
+    @MethodSource
+    void orientation_flip(Orientation original, Orientation expectedResult) {
+        Orientation rotated = Orientation.flip(original);
+
+        Assertions.assertEquals(expectedResult, rotated);
+    }
+
+    private static Stream<Arguments> orientation_flip() {
+        return Stream.of(
+                Arguments.of(Orientation.NORTH, Orientation.SOUTH),
+                Arguments.of(Orientation.EAST, Orientation.WEST),
+                Arguments.of(Orientation.SOUTH, Orientation.NORTH),
+                Arguments.of(Orientation.WEST, Orientation.EAST)
+        );
+    }
 
     @ParameterizedTest
     @MethodSource

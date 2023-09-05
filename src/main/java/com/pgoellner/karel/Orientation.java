@@ -16,6 +16,15 @@ enum Orientation {
         return result;
     }
 
+    public static Orientation flip(Orientation original) {
+        switch (original) {
+            case NORTH: return SOUTH;
+            case EAST: return WEST;
+            case SOUTH: return NORTH;
+            default: return EAST;
+        }
+    }
+
     public static Orientation from(String orientationString) {
         switch (orientationString.toLowerCase()) {
             case "north": return NORTH;

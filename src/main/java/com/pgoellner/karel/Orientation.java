@@ -17,7 +17,7 @@ enum Orientation {
     }
 
     public static Orientation from(String orientationString) {
-        switch (orientationString) {
+        switch (orientationString.toLowerCase()) {
             case "north": return NORTH;
             case "east": return EAST;
             case "south": return SOUTH;

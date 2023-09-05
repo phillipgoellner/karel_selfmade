@@ -24,4 +24,25 @@ class OrientationTest {
                 Arguments.of(Orientation.WEST, Orientation.SOUTH)
         );
     }
+
+    @ParameterizedTest
+    @MethodSource
+    void parses_strings(String orientationString, Orientation expectedOrientation) {
+        Orientation rotated = Orientation.from(orientationString);
+
+        Assertions.assertEquals(expectedOrientation, rotated);
+    }
+
+    private static Stream<Arguments> parses_strings() {
+        return Stream.of(
+                Arguments.of("north", Orientation.NORTH),
+                Arguments.of("North", Orientation.NORTH),
+                Arguments.of("east", Orientation.EAST),
+                Arguments.of("East", Orientation.EAST),
+                Arguments.of("south", Orientation.SOUTH),
+                Arguments.of("South", Orientation.SOUTH),
+                Arguments.of("west", Orientation.WEST),
+                Arguments.of("West", Orientation.WEST)
+        );
+    }
 }

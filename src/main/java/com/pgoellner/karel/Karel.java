@@ -10,16 +10,17 @@ public class Karel {
 
     private JFrame updateTarget;
 
-    public Karel(World world) {
-        currentLocation = new Coordinates(4, 4);
-        currentOrientation = Orientation.NORTH;
+    Karel(World world, Coordinates startingPoint, Orientation startingOrientation) {
+        currentLocation = startingPoint;
+        currentOrientation = startingOrientation;
 
         this.world = world;
     }
 
     public static void main(String[] args) {
-        World world = new WorldFileParser().fromDescription();
-        UiBuilder.createWindow(new Karel(world), world);
+        WorldFileParser parser = new WorldFileParser();
+        World world = parser.fromDescription();
+        UiBuilder.createWindow(new Karel(world, parser.karelStartingPoint(), parser.karelStartingOrientation()), world);
     }
 
     void registerUpdateCallback(JFrame target) {

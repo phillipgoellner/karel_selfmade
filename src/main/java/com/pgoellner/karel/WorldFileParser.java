@@ -1,5 +1,6 @@
 package com.pgoellner.karel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -8,7 +9,7 @@ public class WorldFileParser {
     private final List<String> lines;
 
     public WorldFileParser() {
-        lines = Stream.of(
+        this(Stream.of(
                 "Dimension: (14, 14)",
                 "Wall: (1, 8) south",
                 "Wall: (7, 8) south",
@@ -42,11 +43,44 @@ public class WorldFileParser {
                 "",
                 "BeeperBag: INFINITE",
                 "Speed: 0.50"
-        ).collect(Collectors.toList());
+        ).collect(Collectors.toList()));
+    }
+
+    public WorldFileParser(List<String> lines) {
+        this.lines = new ArrayList<>(lines);
     }
 
     public World fromDescription() {
-        return new World(14, 14, walls(), beeperLocations());
+        final Coordinates farCorner = worldFarCorner();
+        return new World(farCorner.x, farCorner.y, walls(), beeperLocations());
+    }
+
+    Coordinates karelStartingPoint() {
+        return this.lines
+                .stream()
+                .filter(line -> line.contains("Karel: ("))
+                .map(line -> {
+                    final String karelCoordinate = line.replace("Karel: (", "").split("\\)")[0];
+                    final String x = karelCoordinate.split(", ")[0];
+                    final String y = karelCoordinate.split(", ")[1];
+
+                    return new Coordinates(Integer.parseInt(x), Integer.parseInt(y));
+                })
+                .findFirst()
+                .orElse(new Coordinates(0, 0));
+    }
+
+    Orientation karelStartingOrientation() {
+        return this.lines
+                .stream()
+                .filter(line -> line.contains("Karel: ("))
+                .map(line -> {
+                    final String karelOrientation = line.split("\\) ")[1];
+
+                    return Orientation.from(karelOrientation);
+                })
+                .findFirst()
+                .orElse(Orientation.EAST);
     }
 
     private List<Coordinates> beeperLocations() {
@@ -74,5 +108,20 @@ public class WorldFileParser {
                     return new WallLocation(new Coordinates(Integer.parseInt(x), Integer.parseInt(y)), Orientation.from(line.split("\\) ")[1]));
                 })
                 .collect(Collectors.toList());
+    }
+
+    private Coordinates worldFarCorner() {
+        return this.lines
+                .stream()
+                .filter(line -> line.contains("Dimension: ("))
+                .map(line -> {
+                    final String karelCoordinate = line.replace("Dimension: (", "").split("\\)")[0];
+                    final String x = karelCoordinate.split(", ")[0];
+                    final String y = karelCoordinate.split(", ")[1];
+
+                    return new Coordinates(Integer.parseInt(x), Integer.parseInt(y));
+                })
+                .findFirst()
+                .orElse(new Coordinates(5, 5));
     }
 }

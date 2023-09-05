@@ -38,6 +38,37 @@ public final class World {
         return new ArrayList<>(walls);
     }
 
+    boolean viewIsBlocked(Coordinates position, Orientation viewingDirection) {
+        return watchingAtWall(position, viewingDirection) || watchingAtBorder(position, viewingDirection);
+    }
+
+    private boolean watchingAtWall(Coordinates position, Orientation viewingDirection) {
+        final WallLocation positionToCheck = new WallLocation(position, viewingDirection);
+
+        for (WallLocation location : walls) {
+            if (location.equals(positionToCheck) ||
+                            location.oppositeWallLocation().equals(positionToCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean watchingAtBorder(Coordinates position, Orientation viewingDirection) {
+        switch (viewingDirection) {
+            case NORTH:
+                return position.y == yDimension();
+            case EAST:
+                return position.x == xDimension();
+            case SOUTH:
+                return position.y == 1;
+            case WEST:
+                return position.x == 1;
+            default:
+                return false;
+        }
+    }
+
 
     public String toString() {
         return String.format("Dim: (%s/%s) / Beepers: %s / Walls: %s",

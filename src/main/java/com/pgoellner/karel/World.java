@@ -69,6 +69,31 @@ class WallLocation {
         this.coordinates = coordinates;
         this.orientation = orientation;
     }
+
+    WallLocation oppositeWallLocation() {
+        final Orientation flippedOrientation = Orientation.flip(orientation);
+        final Coordinates flippedCoordinates;
+
+        switch (orientation) {
+            case NORTH:
+                flippedCoordinates = new Coordinates(coordinates.x, coordinates.y + 1);
+                break;
+            case WEST:
+                flippedCoordinates = new Coordinates(coordinates.x - 1, coordinates.y);
+                break;
+            case SOUTH:
+                flippedCoordinates = new Coordinates(coordinates.x, coordinates.y - 1);
+                break;
+            case EAST:
+                flippedCoordinates = new Coordinates(coordinates.x + 1, coordinates.y);
+                break;
+            default:
+                flippedCoordinates = coordinates;
+        }
+
+        return new WallLocation(flippedCoordinates, flippedOrientation);
+    }
+
     public String toString() {
         return String.format("(%d/%d) - %s", coordinates.x, coordinates.y, orientation);
     }

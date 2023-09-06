@@ -75,8 +75,9 @@ public class KarelCanvas extends JPanel {
         for (int x = 0; x < fieldWidth(); x++) {
             for (int y = 0; y < fieldHeight(); y++) {
                 final Coordinates worldCoordinates = new Coordinates(x, y);
+                final int numberOfBeepers = world.numberOfBeepersAt(worldCoordinates);
 
-                if (world.numberOfBeepersAt(worldCoordinates) > 0) {
+                if (numberOfBeepers > 0) {
                     final Coordinates renderCoordinates = worldCoordinates.plus(Coordinates.UNIT).mirrorOnY(fieldHeight());
 
                     final int _x = (renderCoordinates.x - 1) * spriteSide() + xOffset;
@@ -100,8 +101,16 @@ public class KarelCanvas extends JPanel {
 
                     drawer.setColor(Color.LIGHT_GRAY);
                     drawer.fillPolygon(beeperFigure);
-                    drawer.setColor(Color.BLACK);
+                    drawer.setColor(Color.DARK_GRAY);
                     drawer.drawPolygon(beeperFigure);
+
+                    if (numberOfBeepers > 1) {
+                        drawer.drawString(
+                                "" + numberOfBeepers,
+                                _x + scale(spriteSide(), 50) - 4,
+                                _y + scale(spriteSide(), 50) + 5
+                        );
+                    }
                 }
             }
         }

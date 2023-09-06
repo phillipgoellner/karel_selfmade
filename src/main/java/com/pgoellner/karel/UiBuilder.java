@@ -22,7 +22,7 @@ final class UiBuilder {
 
         JPanel controls = new JPanel();
         JButton play = new JButton("Play");
-        play.addActionListener(new PlayButtonListener(karel));
+        play.addActionListener(new PlayButtonListener(karel, window));
         controls.add(play);
         layout.addLayoutComponent(controls, BorderLayout.WEST);
         mainPanel.add(controls);
@@ -38,10 +38,12 @@ final class UiBuilder {
 
 class PlayButtonListener implements ActionListener {
     private final Karel program;
+    private final JFrame window;
     private boolean hasRun;
 
-    PlayButtonListener(Karel program) {
+    PlayButtonListener(Karel program, JFrame window) {
         this.program = program;
+        this.window = window;
         this.hasRun = false;
     }
 
@@ -49,6 +51,17 @@ class PlayButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (!hasRun) {
             new Thread(program::run).start();
+            new Thread(() -> {
+                while (true) {
+                    window.repaint();
+                    try {
+                        Thread.sleep(1000L / 140);
+                    } catch (InterruptedException interruptedException) {
+                        System.err.printf("Something really bad went wrong: %s%n", interruptedException);
+                        System.err.println("Please get mad at the developer");
+                    }
+                }
+            }).start();
 
             hasRun = true;
         }

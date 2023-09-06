@@ -37,6 +37,15 @@ public class Karel {
         move();
     }
 
+    private void renderUpdateAndPause() {
+        try {
+            Thread.sleep(200L);
+        } catch (InterruptedException interruptedException) {
+            System.err.printf("Something really bad went wrong: %s%n", interruptedException);
+            System.err.println("Please get mad at the developer");
+        }
+    }
+
     public final void move() {
         currentLocation = currentLocation.plus(direction());
         renderUpdateAndPause();
@@ -52,14 +61,43 @@ public class Karel {
         renderUpdateAndPause();
     }
 
-    private void renderUpdateAndPause() {
-        try {
-            Thread.sleep(200L);
-        } catch (InterruptedException interruptedException) {
-            System.err.printf("Something really bad went wrong: %s%n", interruptedException);
-            System.err.println("Please get mad at the developer");
-        }
-        updateTarget.repaint();
+    public final boolean facingNorth() {
+        return currentOrientation == Orientation.NORTH;
+    }
+    public final boolean facingEast() {
+        return currentOrientation == Orientation.EAST;
+    }
+    public final boolean facingSouth() {
+        return currentOrientation == Orientation.SOUTH;
+    }
+    public final boolean facingWest() {
+        return currentOrientation == Orientation.WEST;
+    }
+
+    public final boolean frontIsClear() {
+        return !world.viewIsBlocked(currentLocation, currentOrientation);
+    }
+    public final boolean leftIsClear() {
+        return !world.viewIsBlocked(currentLocation, Orientation.rotateLeft(currentOrientation));
+    }
+    public final boolean rightIsClear() {
+        return !world.viewIsBlocked(
+                currentLocation,
+                Orientation.rotateLeft(Orientation.rotateLeft(Orientation.rotateLeft(currentOrientation)))
+        );
+    }
+
+    public final boolean frontIsBlocked() {
+        return world.viewIsBlocked(currentLocation, currentOrientation);
+    }
+    public final boolean leftIsBlocked() {
+        return world.viewIsBlocked(currentLocation, Orientation.rotateLeft(currentOrientation));
+    }
+    public final boolean rightIsBlocked() {
+        return world.viewIsBlocked(
+                currentLocation,
+                Orientation.rotateLeft(Orientation.rotateLeft(Orientation.rotateLeft(currentOrientation)))
+        );
     }
 
     int x() {

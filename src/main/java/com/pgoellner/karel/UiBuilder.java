@@ -11,7 +11,6 @@ final class UiBuilder {
 
     static void createWindow(Karel karel, World world) {
         JFrame window = new JFrame();
-        karel.registerUpdateCallback(window);
 
         JPanel mainPanel = new JPanel();
         BorderLayout layout = new BorderLayout();

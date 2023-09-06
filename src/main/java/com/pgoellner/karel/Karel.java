@@ -1,14 +1,10 @@
 package com.pgoellner.karel;
 
-import javax.swing.*;
-
 public class Karel {
     private Coordinates currentLocation;
     private Orientation currentOrientation;
 
     private final World world;
-
-    private JFrame updateTarget;
 
     Karel(World world, Coordinates startingPoint, Orientation startingOrientation) {
         currentLocation = startingPoint;
@@ -21,10 +17,6 @@ public class Karel {
         WorldFileParser parser = new WorldFileParser();
         World world = parser.fromDescription();
         UiBuilder.createWindow(new Karel(world, parser.karelStartingPoint(), parser.karelStartingOrientation()), world);
-    }
-
-    void registerUpdateCallback(JFrame target) {
-        this.updateTarget = target;
     }
 
     public void run() {

@@ -30,6 +30,10 @@ public final class World {
         beeperPlacements[location.x][location.y] += 1;
     }
 
+    void removeBeeper(Coordinates location) {
+        beeperPlacements[location.x][location.y] -= 1;
+    }
+
     int numberOfBeepersAt(Coordinates location) {
         return beeperPlacements[location.x][location.y];
     }

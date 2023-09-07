@@ -53,6 +53,15 @@ public class Karel {
         renderUpdateAndPause();
     }
 
+    public final void pickBeeper() {
+        world.removeBeeper(currentLocation.minus(Coordinates.UNIT));
+        renderUpdateAndPause();
+    }
+
+    public final boolean beeperIsPresent() {
+        return world.numberOfBeepersAt(currentLocation.minus(Coordinates.UNIT)) > 0;
+    }
+
     public final boolean facingNorth() {
         return currentOrientation == Orientation.NORTH;
     }

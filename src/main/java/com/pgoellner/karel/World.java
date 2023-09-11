@@ -1,5 +1,6 @@
 package com.pgoellner.karel;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -8,11 +9,17 @@ import java.util.List;
 public final class World {
     private final int[][] beeperPlacements;
     private final List<WallLocation> walls;
+    private final List<ColourLocation> colours;
 
     World(int x, int y, List<WallLocation> walls, List<Coordinates> beepers) {
+        this(x, y, walls, beepers, new ArrayList<>());
+    }
+
+    World(int x, int y, List<WallLocation> walls, List<Coordinates> beepers, List<ColourLocation> colours) {
         this.beeperPlacements = new int[x][y];
 
         this.walls = walls;
+        this.colours = colours;
         for (Coordinates beeperLocation : beepers) {
             this.beeperPlacements[beeperLocation.x][beeperLocation.y]++;
         }
@@ -40,6 +47,10 @@ public final class World {
 
     List<WallLocation> allWalls() {
         return new ArrayList<>(walls);
+    }
+
+    List<ColourLocation> allColours() {
+        return new ArrayList<>(colours);
     }
 
     boolean viewIsBlocked(Coordinates position, Orientation viewingDirection) {
@@ -139,5 +150,24 @@ class WallLocation {
 
     public boolean equals(Object other) {
         return (other instanceof WallLocation) && (hashCode() == other.hashCode());
+    }
+}
+
+class ColourLocation {
+    final Coordinates location;
+    final Color colour;
+
+    ColourLocation(Coordinates location, Color colour) {
+        this.location = location;
+        this.colour = colour;
+    }
+
+    public static Color colourFrom(String string) {
+        switch (string.toLowerCase()) {
+            case "gray": return Color.GRAY;
+            case "red": return Color.RED;
+            case "blue": return Color.BLUE;
+            default: return Color.WHITE;
+        }
     }
 }

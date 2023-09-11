@@ -52,7 +52,7 @@ public class WorldFileParser {
 
     public World fromDescription() {
         final Coordinates farCorner = worldFarCorner();
-        return new World(farCorner.x, farCorner.y, walls(), beeperLocations());
+        return new World(farCorner.x, farCorner.y, walls(), beeperLocations(), colours());
     }
 
     Coordinates karelStartingPoint() {
@@ -106,6 +106,22 @@ public class WorldFileParser {
                     final String y = wallCoordinates.split(", ")[1];
 
                     return new WallLocation(new Coordinates(Integer.parseInt(x), Integer.parseInt(y)), Orientation.from(line.split("\\) ")[1]));
+                })
+                .collect(Collectors.toList());
+    }
+
+    private List<ColourLocation> colours() {
+        return this.lines.stream()
+                .filter(line -> line.contains("Color: ("))
+                .map(line -> {
+                    final String colourLocation = line.replace("Color: (", "").split("\\) ")[0];
+                    final String x = colourLocation.split(", ")[0];
+                    final String y = colourLocation.split(", ")[1];
+
+                    return new ColourLocation(
+                            new Coordinates(Integer.parseInt(x), Integer.parseInt(y)),
+                            ColourLocation.colourFrom(line.replace("Color: (", "").split("\\) ")[1])
+                    );
                 })
                 .collect(Collectors.toList());
     }

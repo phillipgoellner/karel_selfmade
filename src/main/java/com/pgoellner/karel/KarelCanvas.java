@@ -46,6 +46,7 @@ public class KarelCanvas extends JPanel {
         fillFieldWithDots(drawer);
         drawBeepers(drawer);
         drawKarel(new Coordinates(karel.x(), karel.y()), karel.facing(), drawer);
+        drawColours(world.allColours(), drawer);
         drawWalls(world.allWalls(), drawer);
         drawCoordinateBox(drawer);
     }
@@ -142,6 +143,16 @@ public class KarelCanvas extends JPanel {
             default:
                 drawer.drawLine(topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y, topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50));
                 break;
+        }
+    }
+
+    private void drawColours(List<ColourLocation> colours, Graphics2D drawer) {
+        for (ColourLocation colourLocation : colours) {
+            drawer.setColor(colourLocation.colour);
+            FieldCorners renderCorners = getRenderCorners(colourLocation.location.mirrorOnY(world.yDimension()).minus(Coordinates.UNIT));
+
+            Coordinates topLeft = renderCorners.topLeft;
+            drawer.fillRect(topLeft.x, topLeft.y, spriteSide(), spriteSide());
         }
     }
 

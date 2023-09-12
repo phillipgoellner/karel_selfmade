@@ -44,9 +44,9 @@ public class KarelCanvas extends JPanel {
 
         paintBackgroundWhite(drawer);
         fillFieldWithDots(drawer);
+        drawColours(world.allColours(), drawer);
         drawBeepers(drawer);
         drawKarel(new Coordinates(karel.x(), karel.y()), karel.facing(), drawer);
-        drawColours(world.allColours(), drawer);
         drawWalls(world.allWalls(), drawer);
         drawCoordinateBox(drawer);
     }

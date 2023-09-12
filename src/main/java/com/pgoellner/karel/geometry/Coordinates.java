@@ -1,4 +1,4 @@
-package com.pgoellner.karel;
+package com.pgoellner.karel.geometry;
 
 public class Coordinates {
     public static final Coordinates UNIT = new Coordinates(1, 1);

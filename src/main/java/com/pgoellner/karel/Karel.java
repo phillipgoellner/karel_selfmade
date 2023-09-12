@@ -1,5 +1,7 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.geometry.Coordinates;
+import com.pgoellner.karel.geometry.Orientation;
 import com.pgoellner.karel.parse.WorldFileParser;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;

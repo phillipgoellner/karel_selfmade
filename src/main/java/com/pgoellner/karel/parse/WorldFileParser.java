@@ -1,8 +1,8 @@
 package com.pgoellner.karel.parse;
 
-import com.pgoellner.karel.Coordinates;
-import com.pgoellner.karel.Location;
-import com.pgoellner.karel.Orientation;
+import com.pgoellner.karel.geometry.Coordinates;
+import com.pgoellner.karel.geometry.Location;
+import com.pgoellner.karel.geometry.Orientation;
 import com.pgoellner.karel.World;
 
 import java.awt.*;

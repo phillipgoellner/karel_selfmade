@@ -1,5 +1,9 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.geometry.Coordinates;
+import com.pgoellner.karel.geometry.Location;
+import com.pgoellner.karel.geometry.Orientation;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,11 +49,11 @@ public final class World {
         return beeperPlacements[location.x][location.y];
     }
 
-    List<Location<Orientation>> allWalls() {
+    public List<Location<Orientation>> allWalls() {
         return new ArrayList<>(walls);
     }
 
-    List<Location<Color>> allColours() {
+    public List<Location<Color>> allColours() {
         return new ArrayList<>(colours);
     }
 

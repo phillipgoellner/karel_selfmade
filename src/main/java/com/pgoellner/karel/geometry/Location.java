@@ -1,4 +1,4 @@
-package com.pgoellner.karel;
+package com.pgoellner.karel.geometry;
 
 public class Location<T> {
     public final Coordinates coordinates;

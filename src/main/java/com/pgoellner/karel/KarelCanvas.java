@@ -146,20 +146,20 @@ public class KarelCanvas extends JPanel {
         }
     }
 
-    private void drawColours(List<ColourLocation> colours, Graphics2D drawer) {
-        for (ColourLocation colourLocation : colours) {
-            drawer.setColor(colourLocation.colour);
-            FieldCorners renderCorners = getRenderCorners(colourLocation.location.mirrorOnY(world.yDimension()).minus(Coordinates.UNIT));
+    private void drawColours(List<Location<Color>> colours, Graphics2D drawer) {
+        for (Location<Color> colourLocation : colours) {
+            drawer.setColor(colourLocation.content);
+            FieldCorners renderCorners = getRenderCorners(colourLocation.coordinates.mirrorOnY(world.yDimension()).minus(Coordinates.UNIT));
 
             Coordinates topLeft = renderCorners.topLeft;
             drawer.fillRect(topLeft.x, topLeft.y, spriteSide(), spriteSide());
         }
     }
 
-    private void drawWalls(List<WallLocation> walls, Graphics2D drawer) {
+    private void drawWalls(List<Location<Orientation>> walls, Graphics2D drawer) {
         drawer.setColor(Color.BLACK);
 
-        for (WallLocation wall : walls) {
+        for (Location<Orientation> wall : walls) {
             final FieldCorners renderCorners = getRenderCorners(wall.coordinates.mirrorOnY(world.yDimension()).minus(Coordinates.UNIT));
 
             final Coordinates topLeft = renderCorners.topLeft;
@@ -167,7 +167,7 @@ public class KarelCanvas extends JPanel {
             final Coordinates bottomLeft = renderCorners.bottomLeft;
             final Coordinates bottomRight = renderCorners.bottomRight;
 
-            switch (wall.orientation) {
+            switch (wall.content) {
                 case NORTH: {
                     drawer.drawLine(
                             topLeft.x,

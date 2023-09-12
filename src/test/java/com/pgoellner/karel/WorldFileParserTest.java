@@ -68,8 +68,8 @@ class WorldFileParserTest {
         void parses_world_data() {
             World parsedWorld = parser.fromDescription();
 
-            List<WallLocation> walls = Stream
-                    .of(new WallLocation(new Coordinates(1, 8), Orientation.SOUTH))
+            List<Location<Orientation>> walls = Stream
+                    .of(new Location<>(new Coordinates(1, 8), Orientation.SOUTH))
                     .collect(Collectors.toList());
 
             List<Coordinates> beepers = Stream

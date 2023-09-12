@@ -1,5 +1,6 @@
 package com.pgoellner.karel;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -97,7 +98,7 @@ public class WorldFileParser {
                 .collect(Collectors.toList());
     }
 
-    private List<WallLocation> walls() {
+    private List<Location<Orientation>> walls() {
         return this.lines.stream()
                 .filter(line -> line.contains("Wall: ("))
                 .map(line -> {
@@ -105,12 +106,12 @@ public class WorldFileParser {
                     final String x = wallCoordinates.split(", ")[0];
                     final String y = wallCoordinates.split(", ")[1];
 
-                    return new WallLocation(new Coordinates(Integer.parseInt(x), Integer.parseInt(y)), Orientation.from(line.split("\\) ")[1]));
+                    return new Location<>(new Coordinates(Integer.parseInt(x), Integer.parseInt(y)), Orientation.from(line.split("\\) ")[1]));
                 })
                 .collect(Collectors.toList());
     }
 
-    private List<ColourLocation> colours() {
+    private List<Location<Color>> colours() {
         return this.lines.stream()
                 .filter(line -> line.contains("Color: ("))
                 .map(line -> {
@@ -118,9 +119,24 @@ public class WorldFileParser {
                     final String x = colourLocation.split(", ")[0];
                     final String y = colourLocation.split(", ")[1];
 
-                    return new ColourLocation(
+                    Color result;
+                    switch (line.replace("Color: (", "").split("\\) ")[1].toLowerCase()) {
+                        case "gray":
+                            result = Color.GRAY;
+                            break;
+                        case "red":
+                            result = Color.RED;
+                            break;
+                        case "blue":
+                            result = Color.BLUE;
+                            break;
+                        default:
+                            result = Color.WHITE;
+                            break;
+                    }
+                    return new Location<>(
                             new Coordinates(Integer.parseInt(x), Integer.parseInt(y)),
-                            ColourLocation.colourFrom(line.replace("Color: (", "").split("\\) ")[1])
+                            result
                     );
                 })
                 .collect(Collectors.toList());

@@ -14,8 +14,8 @@ class WorldTest {
             5,
             5,
             Stream.of(
-                    new WallLocation(new Coordinates(2, 3), Orientation.EAST),
-                    new WallLocation(new Coordinates(4, 4), Orientation.SOUTH)
+                    new Location<>(new Coordinates(2, 3), Orientation.EAST),
+                    new Location<>(new Coordinates(4, 4), Orientation.SOUTH)
             ).collect(Collectors.toList()),
             new ArrayList<>()
     );

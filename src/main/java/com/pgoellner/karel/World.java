@@ -15,7 +15,7 @@ public final class World {
         this(x, y, walls, beepers, new ArrayList<>());
     }
 
-    World(int x, int y, List<Location<Orientation>> walls, List<Coordinates> beepers, List<Location<Color>> colours) {
+    public World(int x, int y, List<Location<Orientation>> walls, List<Coordinates> beepers, List<Location<Color>> colours) {
         this.beeperPlacements = new int[x][y];
 
         this.walls = walls;

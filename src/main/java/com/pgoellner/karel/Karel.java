@@ -1,5 +1,7 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.parse.WorldFileParser;
+
 public class Karel {
     private Coordinates currentLocation;
     private Orientation currentOrientation;

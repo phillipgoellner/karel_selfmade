@@ -1,5 +1,6 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.parse.WorldFileParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

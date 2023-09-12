@@ -1,10 +1,10 @@
 package com.pgoellner.karel;
 
-class Location<T> {
-    final Coordinates coordinates;
-    final T content;
+public class Location<T> {
+    public final Coordinates coordinates;
+    public final T content;
 
-    Location(Coordinates coordinates, T content) {
+    public Location(Coordinates coordinates, T content) {
         this.coordinates = coordinates;
         this.content = content;
     }

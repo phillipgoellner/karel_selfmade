@@ -1,6 +1,6 @@
 package com.pgoellner.karel;
 
-enum Orientation {
+public enum Orientation {
     NORTH, WEST, SOUTH, EAST;
 
     public static Orientation rotateLeft(Orientation original) {

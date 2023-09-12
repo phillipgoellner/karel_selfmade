@@ -1,12 +1,18 @@
 package com.pgoellner.karel;
 
 import com.pgoellner.karel.parse.WorldFileParser;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 
 public class Karel {
     private Coordinates currentLocation;
     private Orientation currentOrientation;
 
-    private final World world;
+    private World world;
+
+    public Karel() {
+        this(null, null, null);
+    }
 
     Karel(World world, Coordinates startingPoint, Orientation startingOrientation) {
         currentLocation = startingPoint;
@@ -15,10 +21,29 @@ public class Karel {
         this.world = world;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+        String programStart = runtimeMxBean
+                .getInputArguments()
+                .stream()
+                .filter(line -> line.startsWith("-Dsun.java.command"))
+                .map(line -> line.replace("-Dsun.java.command=", ""))
+                .findFirst()
+                .orElse("Karel (nothing found)");
+
         WorldFileParser parser = new WorldFileParser();
         World world = parser.fromDescription();
-        UiBuilder.createWindow(new Karel(world, parser.karelStartingPoint(), parser.karelStartingOrientation()), world);
+
+        Karel karel = (Karel) Class.forName(programStart).newInstance();
+        karel.world = world;
+        karel.currentLocation = parser.karelStartingPoint();
+        karel.currentOrientation = parser.karelStartingOrientation();
+
+        UiBuilder.createWindow(
+                karel,
+                world,
+                programStart
+        );
     }
 
     public void run() {
@@ -31,7 +56,7 @@ public class Karel {
         move();
     }
 
-    private void renderUpdateAndPause() {
+    private void pause() {
         try {
             Thread.sleep(200L);
         } catch (InterruptedException interruptedException) {
@@ -42,22 +67,22 @@ public class Karel {
 
     public final void move() {
         currentLocation = currentLocation.plus(direction());
-        renderUpdateAndPause();
+        pause();
     }
 
     public final void turnLeft() {
         currentOrientation = Orientation.rotateLeft(currentOrientation);
-        renderUpdateAndPause();
+        pause();
     }
 
     public final void putBeeper() {
         world.putBeeper(currentLocation.minus(Coordinates.UNIT));
-        renderUpdateAndPause();
+        pause();
     }
 
     public final void pickBeeper() {
         world.removeBeeper(currentLocation.minus(Coordinates.UNIT));
-        renderUpdateAndPause();
+        pause();
     }
 
     public final boolean beeperIsPresent() {

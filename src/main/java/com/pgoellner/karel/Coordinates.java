@@ -15,10 +15,6 @@ public class Coordinates {
         return new Coordinates(x, translatedY);
     }
 
-    public Coordinates plusX() {
-        return new Coordinates(x + 1, y);
-    }
-
     public Coordinates plus(Coordinates summend) {
         return new Coordinates(x + summend.x, y + summend.y);
     }

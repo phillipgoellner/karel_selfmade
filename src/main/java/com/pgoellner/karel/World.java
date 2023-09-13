@@ -15,6 +15,10 @@ public final class World {
     private final List<Location<Orientation>> walls;
     private final List<Location<Color>> colours;
 
+    World(int x, int y) {
+        this(x, y, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
     World(int x, int y, List<Location<Orientation>> walls, List<Coordinates> beepers) {
         this(x, y, walls, beepers, new ArrayList<>());
     }

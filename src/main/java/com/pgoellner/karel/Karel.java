@@ -13,7 +13,7 @@ public class Karel {
     private World world;
 
     public Karel() {
-        this(null, null, null);
+        this(new World(5, 5), new Coordinates(1, 1), Orientation.EAST);
     }
 
     Karel(World world, Coordinates startingPoint, Orientation startingOrientation) {

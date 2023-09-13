@@ -33,7 +33,9 @@ public class Karel {
                 .findFirst()
                 .orElse("Karel (nothing found)");
 
-        WorldFileParser parser = new WorldFileParser();
+        String worldFilePath = String.format("src/worlds/%s.w", programStart.replace("com.pgoellner.karel.", ""));
+
+        WorldFileParser parser = new WorldFileParser(worldFilePath);
         World world = parser.fromDescription();
 
         Karel karel = (Karel) Class.forName(programStart).newInstance();
@@ -54,7 +56,7 @@ public class Karel {
 
     private void pause() {
         try {
-            Thread.sleep(200L);
+            Thread.sleep(70L);
         } catch (InterruptedException interruptedException) {
             System.err.printf("Something really bad went wrong: %s%n", interruptedException);
             System.err.println("Please get mad at the developer");

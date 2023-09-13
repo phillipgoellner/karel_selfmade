@@ -24,7 +24,7 @@ class WorldFileParserTest {
         void has_default_coordinates() {
             Coordinates parsedCoordinates = parser.karelStartingPoint();
 
-            Assertions.assertEquals(new Coordinates(0, 0), parsedCoordinates);
+            Assertions.assertEquals(new Coordinates(1, 1), parsedCoordinates);
         }
 
         @Test

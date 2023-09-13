@@ -6,12 +6,15 @@ import com.pgoellner.karel.geometry.Orientation;
 import com.pgoellner.karel.World;
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class WorldFileParser {
-    private final List<String> lines;
+    private List<String> lines;
 
     private static final String karelLineHeading = "Karel: (";
     private static final String beeperLineHeading = "Beeper: (";
@@ -19,12 +22,16 @@ public class WorldFileParser {
     private static final String colorLineHeading = "Color: (";
     private static final String dimensionLineHeading = "Dimension: (";
 
-    public WorldFileParser() {
-        this(MadLabyrinth.PARSE_INPUT.collect(Collectors.toList()));
-    }
-
     public WorldFileParser(List<String> lines) {
         this.lines = new ArrayList<>(lines);
+    }
+
+    public WorldFileParser(String pathToWorldFile) {
+        try {
+            this.lines = Files.lines(Paths.get(pathToWorldFile)).collect(Collectors.toList());
+        } catch (IOException e) {
+            this.lines = new ArrayList<>();
+        }
     }
 
     public World fromDescription() {
@@ -38,7 +45,7 @@ public class WorldFileParser {
                 .filter(line -> line.contains(karelLineHeading))
                 .map(line -> coordinatesFrom(line, karelLineHeading))
                 .findFirst()
-                .orElse(new Coordinates(0, 0));
+                .orElse(new Coordinates(1, 1));
     }
 
     public Orientation karelStartingOrientation() {

@@ -49,13 +49,7 @@ public class Karel {
     }
 
     public void run() {
-        turnLeft();
-        putBeeper();
-        move();
-        putBeeper();
-        move();
-        putBeeper();
-        move();
+        // to be overridden in subclass
     }
 
     private void pause() {

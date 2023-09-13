@@ -45,10 +45,6 @@ class KarelButtonListener implements ActionListener {
     private final KarelTextField textField;
     private boolean hasRun;
 
-    KarelButtonListener(Karel program, JFrame window) {
-        this(program, window, new KarelTextField(""));
-    }
-
     KarelButtonListener(Karel program, JFrame window, KarelTextField textField) {
         this.program = program;
         this.window = window;

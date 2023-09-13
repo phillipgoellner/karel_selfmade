@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,6 +50,7 @@ class WorldFileParserTest {
                 "Wall: (1, 8) south",
                 "Beeper: (8, 8) 1",
                 "Karel: (4, 8) north",
+                "Color: (2, 2) RED",
                 "",
                 "BeeperBag: INFINITE",
                 "Speed: 0.50"
@@ -81,6 +83,27 @@ class WorldFileParserTest {
                     .collect(Collectors.toList());
 
             World expectedWorld = new World(9, 9, walls, beepers);
+
+            Assertions.assertEquals(expectedWorld, parsedWorld);
+        }
+
+        @Test
+        void parses_world_data_with_colours() {
+            World parsedWorld = parser.fromDescription();
+
+            List<Location<Orientation>> walls = Stream
+                    .of(new Location<>(new Coordinates(1, 8), Orientation.SOUTH))
+                    .collect(Collectors.toList());
+
+            List<Coordinates> beepers = Stream
+                    .of(new Coordinates(7, 7))
+                    .collect(Collectors.toList());
+
+            List<Location<Color>> colours = Stream
+                    .of(new Location<>(new Coordinates(2, 2), Color.RED))
+                    .collect(Collectors.toList());
+
+            World expectedWorld = new World(9, 9, walls, beepers, colours);
 
             Assertions.assertEquals(expectedWorld, parsedWorld);
         }

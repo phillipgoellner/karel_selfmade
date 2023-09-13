@@ -13,6 +13,12 @@ import java.util.stream.Collectors;
 public class WorldFileParser {
     private final List<String> lines;
 
+    private static final String karelLineHeading = "Karel: (";
+    private static final String beeperLineHeading = "Beeper: (";
+    private static final String wallLineHeading = "Wall: (";
+    private static final String colorLineHeading = "Color: (";
+    private static final String dimensionLineHeading = "Dimension: (";
+
     public WorldFileParser() {
         this(MadLabyrinth.PARSE_INPUT.collect(Collectors.toList()));
     }
@@ -29,14 +35,8 @@ public class WorldFileParser {
     public Coordinates karelStartingPoint() {
         return this.lines
                 .stream()
-                .filter(line -> line.contains("Karel: ("))
-                .map(line -> {
-                    final String karelCoordinate = line.replace("Karel: (", "").split("\\)")[0];
-                    final String x = karelCoordinate.split(", ")[0];
-                    final String y = karelCoordinate.split(", ")[1];
-
-                    return new Coordinates(Integer.parseInt(x), Integer.parseInt(y));
-                })
+                .filter(line -> line.contains(karelLineHeading))
+                .map(line -> coordinatesFrom(line, karelLineHeading))
                 .findFirst()
                 .orElse(new Coordinates(0, 0));
     }
@@ -44,7 +44,7 @@ public class WorldFileParser {
     public Orientation karelStartingOrientation() {
         return this.lines
                 .stream()
-                .filter(line -> line.contains("Karel: ("))
+                .filter(line -> line.contains(karelLineHeading))
                 .map(line -> {
                     final String karelOrientation = line.split("\\) ")[1];
 
@@ -57,15 +57,11 @@ public class WorldFileParser {
     private List<Coordinates> beeperLocations() {
         return this.lines
                 .stream()
-                .filter(line -> line.contains("Beeper: ("))
+                .filter(line -> line.contains(beeperLineHeading))
                 .map(line -> {
-                    final String beeperCoordinates = line.replace("Beeper: (", "").split("\\)")[0];
-                    final String x = beeperCoordinates.split(", ")[0];
-                    final String y = beeperCoordinates.split(", ")[1];
-
                     final int beeperCount = Integer.parseInt(line.split("\\) ")[1]);
 
-                    return new Location<>(new Coordinates(Integer.parseInt(x) - 1, Integer.parseInt(y) - 1), beeperCount);
+                    return new Location<>(coordinatesFrom(line, beeperLineHeading).minus(Coordinates.UNIT), beeperCount);
                 })
                 .flatMap(location -> {
                     final List<Coordinates> beepersOnLocation = new ArrayList<>();
@@ -79,25 +75,18 @@ public class WorldFileParser {
 
     private List<Location<Orientation>> walls() {
         return this.lines.stream()
-                .filter(line -> line.contains("Wall: ("))
-                .map(line -> {
-                    final String wallCoordinates = line.replace("Wall: (", "").split("\\)")[0];
-                    final String x = wallCoordinates.split(", ")[0];
-                    final String y = wallCoordinates.split(", ")[1];
-
-                    return new Location<>(new Coordinates(Integer.parseInt(x), Integer.parseInt(y)), Orientation.from(line.split("\\) ")[1]));
-                })
+                .filter(line -> line.contains(wallLineHeading))
+                .map(line -> new Location<>(
+                        coordinatesFrom(line, wallLineHeading),
+                        Orientation.from(line.split("\\) ")[1])
+                ))
                 .collect(Collectors.toList());
     }
 
     private List<Location<Color>> colours() {
         return this.lines.stream()
-                .filter(line -> line.contains("Color: ("))
+                .filter(line -> line.contains(colorLineHeading))
                 .map(line -> {
-                    final String colourLocation = line.replace("Color: (", "").split("\\) ")[0];
-                    final String x = colourLocation.split(", ")[0];
-                    final String y = colourLocation.split(", ")[1];
-
                     Color result;
                     switch (line.split("\\) ")[1].toLowerCase()) {
                         case "gray":
@@ -113,10 +102,7 @@ public class WorldFileParser {
                             result = Color.WHITE;
                             break;
                     }
-                    return new Location<>(
-                            new Coordinates(Integer.parseInt(x), Integer.parseInt(y)),
-                            result
-                    );
+                    return new Location<>(coordinatesFrom(line, colorLineHeading), result);
                 })
                 .collect(Collectors.toList());
     }
@@ -124,15 +110,17 @@ public class WorldFileParser {
     private Coordinates worldFarCorner() {
         return this.lines
                 .stream()
-                .filter(line -> line.contains("Dimension: ("))
-                .map(line -> {
-                    final String karelCoordinate = line.replace("Dimension: (", "").split("\\)")[0];
-                    final String x = karelCoordinate.split(", ")[0];
-                    final String y = karelCoordinate.split(", ")[1];
-
-                    return new Coordinates(Integer.parseInt(x), Integer.parseInt(y));
-                })
+                .filter(line -> line.contains(dimensionLineHeading))
+                .map(line -> coordinatesFrom(line, dimensionLineHeading))
                 .findFirst()
                 .orElse(new Coordinates(5, 5));
+    }
+
+    private static Coordinates coordinatesFrom(String line, String lineHeading) {
+            final String karelCoordinate = line.replace(lineHeading, "").split("\\)")[0];
+            final String x = karelCoordinate.split(", ")[0];
+            final String y = karelCoordinate.split(", ")[1];
+
+            return new Coordinates(Integer.parseInt(x), Integer.parseInt(y));
     }
 }

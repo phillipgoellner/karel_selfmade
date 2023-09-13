@@ -9,8 +9,8 @@ final class UiBuilder {
     private UiBuilder() {
     }
 
-    static void createWindow(Karel karel, World world) {
-        JFrame window = new JFrame();
+    static void createWindow(Karel karel, World world, String programTitle) {
+        JFrame window = new JFrame(programTitle);
 
         JPanel mainPanel = new JPanel();
         BorderLayout layout = new BorderLayout();
@@ -20,8 +20,12 @@ final class UiBuilder {
         mainPanel.add(canvas);
 
         JPanel controls = new JPanel();
-        JButton play = new JButton("Play");
-        play.addActionListener(new PlayButtonListener(karel, window));
+
+        KarelTextField text = new KarelTextField("Welcome to Karel!");
+        controls.add(text);
+
+        JButton play = new JButton("Start Program");
+        play.addActionListener(new KarelButtonListener(karel, window, text));
         controls.add(play);
         layout.addLayoutComponent(controls, BorderLayout.WEST);
         mainPanel.add(controls);
@@ -29,28 +33,42 @@ final class UiBuilder {
         mainPanel.setLayout(layout);
 
         window.add(mainPanel);
-        window.setMinimumSize(new Dimension(700, 700));
+        window.setMinimumSize(new Dimension(900, 600));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
     }
 }
 
-class PlayButtonListener implements ActionListener {
+class KarelButtonListener implements ActionListener {
     private final Karel program;
     private final JFrame window;
+    private final KarelTextField textField;
     private boolean hasRun;
 
-    PlayButtonListener(Karel program, JFrame window) {
+    KarelButtonListener(Karel program, JFrame window) {
+        this(program, window, new KarelTextField(""));
+    }
+
+    KarelButtonListener(Karel program, JFrame window, KarelTextField textField) {
         this.program = program;
         this.window = window;
+        this.textField = textField;
         this.hasRun = false;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        startProgram();
+    }
+
+    private void startProgram() {
         if (!hasRun) {
-            new Thread(program::run).start();
-            new Thread(() -> {
+            Thread mainLoop = new Thread(() -> {
+                textField.displayRunning();
+                program.run();
+                textField.displaySucceeded();
+            });
+            Thread rendering = new Thread(() -> {
                 while (true) {
                     window.repaint();
                     try {
@@ -60,7 +78,10 @@ class PlayButtonListener implements ActionListener {
                         System.err.println("Please get mad at the developer");
                     }
                 }
-            }).start();
+            });
+
+            mainLoop.start();
+            rendering.start();
 
             hasRun = true;
         }

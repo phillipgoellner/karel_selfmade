@@ -3,8 +3,6 @@ package com.pgoellner.karel;
 import com.pgoellner.karel.geometry.Coordinates;
 import com.pgoellner.karel.geometry.Orientation;
 import com.pgoellner.karel.parse.WorldFileParser;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 
 public class Karel {
     private Coordinates currentLocation;
@@ -24,21 +22,17 @@ public class Karel {
     }
 
     public static void main(String[] args) throws Exception {
-        RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
-        String programStart = runtimeMxBean
-                .getInputArguments()
-                .stream()
-                .filter(line -> line.startsWith("-Dsun.java.command"))
-                .map(line -> line.replace("-Dsun.java.command=", ""))
-                .findFirst()
-                .orElse("Karel (nothing found)");
+        String programName = determineProgramName();
 
-        String worldFilePath = String.format("src/worlds/%s.w", programStart.replace("com.pgoellner.karel.", ""));
+        String worldFileName = programName.replace("com.pgoellner.karel.", "");
 
-        WorldFileParser parser = new WorldFileParser(worldFilePath);
+        WorldFileParser parser = new WorldFileParser(
+                String.format("src/worlds/%s.w", worldFileName),
+                String.format("worlds/%s.w", worldFileName)
+        );
         World world = parser.fromDescription();
 
-        Karel karel = (Karel) Class.forName(programStart).newInstance();
+        Karel karel = karelInstance(programName);
         karel.world = world;
         karel.currentLocation = parser.karelStartingPoint();
         karel.currentOrientation = parser.karelStartingOrientation();
@@ -46,8 +40,20 @@ public class Karel {
         UiBuilder.createWindow(
                 karel,
                 world,
-                programStart
+                programName
         );
+    }
+
+    private static String determineProgramName() {
+        String javaCommandPropertyContent = System.getProperty("sun.java.command");
+        if (javaCommandPropertyContent != null) {
+            return System.getProperty("sun.java.command");
+        }
+        return "COULD NOT DETERMINE PROGRAM NAME";
+    }
+
+    private static Karel karelInstance(String programStart) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        return (Karel) Class.forName(programStart).newInstance();
     }
 
     public void run() {
@@ -90,12 +96,15 @@ public class Karel {
     public final boolean facingNorth() {
         return currentOrientation == Orientation.NORTH;
     }
+
     public final boolean facingEast() {
         return currentOrientation == Orientation.EAST;
     }
+
     public final boolean facingSouth() {
         return currentOrientation == Orientation.SOUTH;
     }
+
     public final boolean facingWest() {
         return currentOrientation == Orientation.WEST;
     }
@@ -103,9 +112,11 @@ public class Karel {
     public final boolean frontIsClear() {
         return !world.viewIsBlocked(currentLocation, currentOrientation);
     }
+
     public final boolean leftIsClear() {
         return !world.viewIsBlocked(currentLocation, Orientation.rotateLeft(currentOrientation));
     }
+
     public final boolean rightIsClear() {
         return !world.viewIsBlocked(
                 currentLocation,
@@ -116,9 +127,11 @@ public class Karel {
     public final boolean frontIsBlocked() {
         return world.viewIsBlocked(currentLocation, currentOrientation);
     }
+
     public final boolean leftIsBlocked() {
         return world.viewIsBlocked(currentLocation, Orientation.rotateLeft(currentOrientation));
     }
+
     public final boolean rightIsBlocked() {
         return world.viewIsBlocked(
                 currentLocation,
@@ -140,10 +153,14 @@ public class Karel {
 
     private Coordinates direction() {
         switch (this.currentOrientation) {
-            case NORTH: return new Coordinates(0, 1);
-            case EAST: return new Coordinates(1, 0);
-            case SOUTH: return new Coordinates(0, -1);
-            default: return new Coordinates(-1, 0);
+            case NORTH:
+                return new Coordinates(0, 1);
+            case EAST:
+                return new Coordinates(1, 0);
+            case SOUTH:
+                return new Coordinates(0, -1);
+            default:
+                return new Coordinates(-1, 0);
         }
     }
 }

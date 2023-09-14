@@ -8,6 +8,7 @@ import com.pgoellner.karel.World;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,18 @@ public class WorldFileParser {
         this.lines = new ArrayList<>(lines);
     }
 
-    public WorldFileParser(String pathToWorldFile) {
-        try {
-            this.lines = Files.lines(Paths.get(pathToWorldFile)).collect(Collectors.toList());
-        } catch (IOException e) {
+    public WorldFileParser(String... possiblePathsToWorldFile) {
+        for (String pathToWorldFile : possiblePathsToWorldFile) {
+            Path path = Paths.get(pathToWorldFile);
+            try {
+                if (Files.exists(path))
+                    this.lines = Files.lines(path).collect(Collectors.toList());
+            } catch (IOException e) {
+                System.err.printf("Could not load content of file %s%n", path.toAbsolutePath());
+            }
+        }
+        if (lines == null) {
+            System.err.println("Now worldfile found");
             this.lines = new ArrayList<>();
         }
     }

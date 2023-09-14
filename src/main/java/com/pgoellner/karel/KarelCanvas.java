@@ -69,7 +69,8 @@ public class KarelCanvas extends JPanel {
 
         for (int x = 0; x < fieldWidth(); x++) {
             for (int y = 0; y < fieldHeight(); y++) {
-                drawer.fillRect(x * spriteSide() + xOffset, y * spriteSide() + yOffset, 2, 2);
+                drawer.drawLine(x * spriteSide() + xOffset - 1, y * spriteSide() + yOffset, x * spriteSide() + xOffset + 1, y * spriteSide() + yOffset);
+                drawer.drawLine(x * spriteSide() + xOffset, y * spriteSide() + yOffset - 1, x * spriteSide() + xOffset, y * spriteSide() + yOffset + 1);
             }
         }
     }

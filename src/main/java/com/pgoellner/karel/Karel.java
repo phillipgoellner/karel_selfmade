@@ -52,8 +52,8 @@ public class Karel {
         return "COULD NOT DETERMINE PROGRAM NAME";
     }
 
-    private static Karel karelInstance(String programStart) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        return (Karel) Class.forName(programStart).newInstance();
+    private static Karel karelInstance(String fromProgramName) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        return (Karel) Class.forName(fromProgramName).newInstance();
     }
 
     public void run() {

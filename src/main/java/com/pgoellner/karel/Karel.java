@@ -70,6 +70,9 @@ public class Karel {
     }
 
     public final void move() {
+        if (world.viewIsBlocked(currentLocation, currentOrientation)) {
+            throw new WallCollision();
+        }
         currentLocation = currentLocation.plus(direction());
         pause();
     }

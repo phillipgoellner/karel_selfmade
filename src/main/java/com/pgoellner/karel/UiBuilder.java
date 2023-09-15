@@ -60,10 +60,15 @@ class KarelButtonListener implements ActionListener {
     private void startProgram() {
         if (!hasRun) {
             Thread mainLoop = new Thread(() -> {
-                textField.displayRunning();
-                program.run();
-                textField.displaySucceeded();
+                try {
+                    textField.displayRunning();
+                    program.run();
+                    textField.displaySucceeded();
+                } catch (WallCollision collision) {
+                    textField.displayError();
+                }
             });
+
             Thread rendering = new Thread(() -> {
                 while (true) {
                     window.repaint();

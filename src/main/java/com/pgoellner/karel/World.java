@@ -43,6 +43,10 @@ public final class World {
         return expanse.yLimit();
     }
 
+    List<Coordinates> allCoordinates() {
+        return expanse.allCoordinates();
+    }
+
     void putBeeper(Coordinates location) {
         this.beepers.put(location, 1 + this.beepers.getOrDefault(location, 0));
     }
@@ -87,9 +91,9 @@ public final class World {
     private boolean watchingAtBorder(Coordinates position, Orientation viewingDirection) {
         switch (viewingDirection) {
             case NORTH:
-                return position.y == yDimension();
+                return position.y == expanse.yLimit();
             case EAST:
-                return position.x == xDimension();
+                return position.x == expanse.xLimit();
             case SOUTH:
                 return position.y == 1;
             case WEST:
@@ -126,8 +130,8 @@ public final class World {
 
     public String toString() {
         return String.format("Dim: (%s/%s) / Beepers: %s / Walls: %s",
-                xDimension(),
-                yDimension(),
+                expanse.xLimit(),
+                expanse.yLimit(),
                 beepers,
                 walls);
     }

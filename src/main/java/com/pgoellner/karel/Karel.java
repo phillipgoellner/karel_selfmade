@@ -80,17 +80,17 @@ public class Karel {
     }
 
     public final void putBeeper() {
-        world.putBeeper(currentLocation.minus(Coordinates.UNIT));
+        world.putBeeper(currentLocation);
         pause();
     }
 
     public final void pickBeeper() {
-        world.removeBeeper(currentLocation.minus(Coordinates.UNIT));
+        world.removeBeeper(currentLocation);
         pause();
     }
 
     public final boolean beeperIsPresent() {
-        return world.numberOfBeepersAt(currentLocation.minus(Coordinates.UNIT)) > 0;
+        return world.numberOfBeepersAt(currentLocation) > 0;
     }
 
     public final boolean facingNorth() {

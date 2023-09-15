@@ -79,45 +79,42 @@ public class KarelCanvas extends JPanel {
         final int xOffset = scale(getWidth() - systemWidthPx(), 50);
         final int yOffset = scale(getHeight() - systemHeightPx(), 50);
 
-        for (int x = 0; x < fieldWidth(); x++) {
-            for (int y = 0; y < fieldHeight(); y++) {
-                final Coordinates worldCoordinates = new Coordinates(x, y);
-                final int numberOfBeepers = world.numberOfBeepersAt(worldCoordinates);
+        for (Coordinates point : world.allCoordinates()) {
+            final int numberOfBeepers = world.numberOfBeepersAt(point);
 
-                if (numberOfBeepers > 0) {
-                    final Coordinates renderCoordinates = worldCoordinates.plus(Coordinates.UNIT).mirrorOnY(fieldHeight());
+            if (numberOfBeepers > 0) {
+                final Coordinates renderCoordinates = point.mirrorOnY(fieldHeight());
 
-                    final int _x = (renderCoordinates.x - 1) * spriteSide() + xOffset;
-                    final int _y = (renderCoordinates.y - 1) * spriteSide() + yOffset;
+                final int _x = (renderCoordinates.x - 1) * spriteSide() + xOffset;
+                final int _y = (renderCoordinates.y - 1) * spriteSide() + yOffset;
 
-                    Polygon beeperFigure = new Polygon(
-                            new int[]{
-                                    _x + scale(spriteSide(), 50),
-                                    _x + spriteSide(),
-                                    _x + scale(spriteSide(), 50),
-                                    _x
-                            },
-                            new int[]{
-                                    _y,
-                                    _y + scale(spriteSide(), 50),
-                                    _y + spriteSide(),
-                                    _y + scale(spriteSide(), 50)
-                            },
-                            4
+                Polygon beeperFigure = new Polygon(
+                        new int[]{
+                                _x + scale(spriteSide(), 50),
+                                _x + spriteSide(),
+                                _x + scale(spriteSide(), 50),
+                                _x
+                        },
+                        new int[]{
+                                _y,
+                                _y + scale(spriteSide(), 50),
+                                _y + spriteSide(),
+                                _y + scale(spriteSide(), 50)
+                        },
+                        4
+                );
+
+                drawer.setColor(Color.LIGHT_GRAY);
+                drawer.fillPolygon(beeperFigure);
+                drawer.setColor(Color.DARK_GRAY);
+                drawer.drawPolygon(beeperFigure);
+
+                if (numberOfBeepers > 1) {
+                    drawer.drawString(
+                            "" + numberOfBeepers,
+                            _x + scale(spriteSide(), 50) - 4,
+                            _y + scale(spriteSide(), 50) + 5
                     );
-
-                    drawer.setColor(Color.LIGHT_GRAY);
-                    drawer.fillPolygon(beeperFigure);
-                    drawer.setColor(Color.DARK_GRAY);
-                    drawer.drawPolygon(beeperFigure);
-
-                    if (numberOfBeepers > 1) {
-                        drawer.drawString(
-                                "" + numberOfBeepers,
-                                _x + scale(spriteSide(), 50) - 4,
-                                _y + scale(spriteSide(), 50) + 5
-                        );
-                    }
                 }
             }
         }

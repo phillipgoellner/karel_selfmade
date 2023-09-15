@@ -77,7 +77,7 @@ public class WorldFileParser {
                 .map(line -> {
                     final int beeperCount = Integer.parseInt(line.split("\\) ")[1]);
 
-                    return new Location<>(coordinatesFrom(line, beeperLineHeading).minus(Coordinates.UNIT), beeperCount);
+                    return new Location<>(coordinatesFrom(line, beeperLineHeading), beeperCount);
                 })
                 .flatMap(location -> {
                     final List<Coordinates> beepersOnLocation = new ArrayList<>();

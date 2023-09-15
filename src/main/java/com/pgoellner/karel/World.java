@@ -1,19 +1,20 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.geometry.CoordinateSystem;
 import com.pgoellner.karel.geometry.Coordinates;
 import com.pgoellner.karel.geometry.Location;
 import com.pgoellner.karel.geometry.Orientation;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
 
 public final class World {
-    private final int[][] beeperPlacements;
-    private final List<Location<Orientation>> walls;
+    private final CoordinateSystem expanse;
+
     private final List<Location<Color>> colours;
+    private final Map<Coordinates, Integer> beepers;
+    private final List<Location<Orientation>> walls;
 
     World(int x, int y) {
         this(x, y, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -24,33 +25,38 @@ public final class World {
     }
 
     public World(int x, int y, List<Location<Orientation>> walls, List<Coordinates> beepers, List<Location<Color>> colours) {
-        this.beeperPlacements = new int[x][y];
+        expanse = new CoordinateSystem(new Coordinates(1, 1), new Coordinates(x, y));
 
         this.walls = walls;
+        this.beepers = new HashMap<>();
         this.colours = colours;
         for (Coordinates beeperLocation : beepers) {
-            this.beeperPlacements[beeperLocation.x][beeperLocation.y]++;
+            this.beepers.put(beeperLocation, 1 + this.beepers.getOrDefault(beeperLocation, 0));
         }
     }
 
     int xDimension() {
-        return beeperPlacements.length;
+        return expanse.xLimit();
     }
 
     int yDimension() {
-        return beeperPlacements[0].length;
+        return expanse.yLimit();
     }
 
     void putBeeper(Coordinates location) {
-        beeperPlacements[location.x][location.y] += 1;
+        this.beepers.put(location, 1 + this.beepers.getOrDefault(location, 0));
     }
 
     void removeBeeper(Coordinates location) {
-        beeperPlacements[location.x][location.y] -= 1;
+        int currentNumberOfBeepers = this.beepers.getOrDefault(location, 0);
+
+        if (currentNumberOfBeepers > 0) {
+            this.beepers.put(location, currentNumberOfBeepers - 1);
+        }
     }
 
     int numberOfBeepersAt(Coordinates location) {
-        return beeperPlacements[location.x][location.y];
+        return beepers.getOrDefault(location, 0);
     }
 
     public List<Location<Orientation>> allWalls() {
@@ -122,7 +128,7 @@ public final class World {
         return String.format("Dim: (%s/%s) / Beepers: %s / Walls: %s",
                 xDimension(),
                 yDimension(),
-                beeperPlacements,
+                beepers,
                 walls);
     }
 
@@ -134,7 +140,7 @@ public final class World {
         if (other instanceof World) {
             World otherWorld = (World) other;
             return new HashSet<>(otherWorld.walls).containsAll(this.walls) &&
-                    Arrays.deepEquals(otherWorld.beeperPlacements, this.beeperPlacements);
+                    beepers.keySet().containsAll(otherWorld.beepers.keySet());
         }
         return false;
     }

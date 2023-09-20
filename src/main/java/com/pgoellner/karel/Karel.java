@@ -137,16 +137,12 @@ public class Karel {
         );
     }
 
-    int x() {
-        return currentLocation.x;
-    }
-
-    int y() {
-        return currentLocation.y;
-    }
-
     Orientation facing() {
         return this.currentOrientation;
+    }
+
+    Coordinates position() {
+        return currentLocation;
     }
 
     private Coordinates direction() {

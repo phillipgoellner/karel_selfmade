@@ -58,7 +58,7 @@ public class KarelCanvas extends JPanel {
 
         drawer.setStroke(defaultStroke);
 
-        drawKarel(new Coordinates(karel.x(), karel.y()), karel.facing(), drawer);
+        drawKarel(drawer);
 
         drawer.setStroke(broadStroke);
 
@@ -132,7 +132,8 @@ public class KarelCanvas extends JPanel {
         }
     }
 
-    private void drawKarel(Coordinates location, Orientation orientation, Graphics2D drawer) {
+    private void drawKarel(Graphics2D drawer) {
+        final Coordinates location = karel.position();
         final FieldCorners corners = getRenderCorners(location.mirrorOnY(fieldHeight()).minus(Coordinates.UNIT));
         final Coordinates topLeftCorner = corners.topLeft;
 
@@ -145,7 +146,7 @@ public class KarelCanvas extends JPanel {
         );
 
         drawer.setColor(Color.BLACK);
-        switch (orientation) {
+        switch (karel.facing()) {
             case EAST:
                 drawer.drawLine(topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50), topLeftCorner.x + spriteSide(), topLeftCorner.y + scale(spriteSide(), 50));
                 break;

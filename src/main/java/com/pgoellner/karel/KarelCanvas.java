@@ -46,13 +46,23 @@ public class KarelCanvas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D drawer = (Graphics2D) g;
+        final Stroke defaultStroke = drawer.getStroke();
 
         paintBackgroundWhite(drawer);
         fillFieldWithDots(drawer);
         drawColours(world.allColours(), drawer);
+
+        drawer.setStroke(new BasicStroke(1.5f));
+
         drawBeepers(drawer);
+
+        drawer.setStroke(defaultStroke);
+
         drawKarel(new Coordinates(karel.x(), karel.y()), karel.facing(), drawer);
-        drawWalls(world.allWalls(), drawer);
+
+        drawer.setStroke(new BasicStroke(1.5f));
+
+        drawWalls(drawer);
         drawCoordinateBox(drawer);
     }
 

@@ -7,7 +7,6 @@ import com.pgoellner.karel.geometry.Orientation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class KarelCanvas extends JPanel {
     private final transient Karel karel;
@@ -51,7 +50,7 @@ public class KarelCanvas extends JPanel {
 
         paintBackgroundWhite(drawer);
         fillFieldWithDots(drawer);
-        drawColours(world.allColours(), drawer);
+        drawColours(drawer);
 
         drawer.setStroke(broadStroke);
 
@@ -162,8 +161,8 @@ public class KarelCanvas extends JPanel {
         }
     }
 
-    private void drawColours(List<Location<Color>> colours, Graphics2D drawer) {
-        for (Location<Color> colourLocation : colours) {
+    private void drawColours(Graphics2D drawer) {
+        for (Location<Color> colourLocation : world.allColours()) {
             drawer.setColor(colourLocation.content);
             FieldCorners renderCorners = getRenderCorners(colourLocation.coordinates.mirrorOnY(world.yDimension()).minus(Coordinates.UNIT));
 

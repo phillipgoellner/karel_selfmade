@@ -47,12 +47,13 @@ public class KarelCanvas extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D drawer = (Graphics2D) g;
         final Stroke defaultStroke = drawer.getStroke();
+        final BasicStroke broadStroke = new BasicStroke(1.5f);
 
         paintBackgroundWhite(drawer);
         fillFieldWithDots(drawer);
         drawColours(world.allColours(), drawer);
 
-        drawer.setStroke(new BasicStroke(1.5f));
+        drawer.setStroke(broadStroke);
 
         drawBeepers(drawer);
 
@@ -60,7 +61,7 @@ public class KarelCanvas extends JPanel {
 
         drawKarel(new Coordinates(karel.x(), karel.y()), karel.facing(), drawer);
 
-        drawer.setStroke(new BasicStroke(1.5f));
+        drawer.setStroke(broadStroke);
 
         drawWalls(drawer);
         drawCoordinateBox(drawer);
@@ -98,17 +99,19 @@ public class KarelCanvas extends JPanel {
                 final int _x = (renderCoordinates.x - 1) * spriteSide() + xOffset;
                 final int _y = (renderCoordinates.y - 1) * spriteSide() + yOffset;
 
+                final int beeperMargin = scale(spriteSide(), 10);
+
                 Polygon beeperFigure = new Polygon(
                         new int[]{
                                 _x + scale(spriteSide(), 50),
-                                _x + spriteSide(),
+                                _x + spriteSide() - beeperMargin,
                                 _x + scale(spriteSide(), 50),
-                                _x
+                                _x + beeperMargin
                         },
                         new int[]{
-                                _y,
+                                _y + beeperMargin,
                                 _y + scale(spriteSide(), 50),
-                                _y + spriteSide(),
+                                _y + spriteSide() - beeperMargin,
                                 _y + scale(spriteSide(), 50)
                         },
                         4

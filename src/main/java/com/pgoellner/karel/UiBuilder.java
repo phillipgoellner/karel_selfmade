@@ -72,12 +72,7 @@ class KarelButtonListener implements ActionListener {
             Thread rendering = new Thread(() -> {
                 while (true) {
                     window.repaint();
-                    try {
-                        Thread.sleep(1000L / 140);
-                    } catch (InterruptedException interruptedException) {
-                        System.err.printf("Something really bad went wrong: %s%n", interruptedException);
-                        System.err.println("Please get mad at the developer");
-                    }
+                    Timer.pause(1000L / 140);
                 }
             });
 

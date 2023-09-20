@@ -61,12 +61,7 @@ public class Karel {
     }
 
     private void pause() {
-        try {
-            Thread.sleep(70L);
-        } catch (InterruptedException interruptedException) {
-            System.err.printf("Something really bad went wrong: %s%n", interruptedException);
-            System.err.println("Please get mad at the developer");
-        }
+        Timer.pause(70L);
     }
 
     public final void move() {

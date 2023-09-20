@@ -159,10 +159,10 @@ public class KarelCanvas extends JPanel {
         }
     }
 
-    private void drawWalls(List<Location<Orientation>> walls, Graphics2D drawer) {
+    private void drawWalls(Graphics2D drawer) {
         drawer.setColor(Color.BLACK);
 
-        for (Location<Orientation> wall : walls) {
+        for (Location<Orientation> wall : world.allWalls()) {
             final FieldCorners renderCorners = getRenderCorners(wall.coordinates.mirrorOnY(world.yDimension()).minus(Coordinates.UNIT));
 
             final Coordinates topLeft = renderCorners.topLeft;

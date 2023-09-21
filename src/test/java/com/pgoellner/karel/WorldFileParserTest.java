@@ -79,7 +79,7 @@ class WorldFileParserTest {
                     .collect(Collectors.toList());
 
             List<Coordinates> beepers = Stream
-                    .of(new Coordinates(7, 7))
+                    .of(new Coordinates(8, 8))
                     .collect(Collectors.toList());
 
             World expectedWorld = new World(9, 9, walls, beepers);
@@ -96,7 +96,7 @@ class WorldFileParserTest {
                     .collect(Collectors.toList());
 
             List<Coordinates> beepers = Stream
-                    .of(new Coordinates(7, 7))
+                    .of(new Coordinates(8, 8))
                     .collect(Collectors.toList());
 
             List<Location<Color>> colours = Stream

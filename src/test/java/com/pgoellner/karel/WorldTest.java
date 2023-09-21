@@ -4,6 +4,7 @@ import com.pgoellner.karel.geometry.Coordinates;
 import com.pgoellner.karel.geometry.Location;
 import com.pgoellner.karel.geometry.Orientation;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,4 +42,52 @@ class WorldTest {
         );
     }
 
+    @Test
+    void placing_beepers_persist_them() {
+        World worldToReset = new World(
+                5,
+                5,
+                new ArrayList<>(),
+                Stream.of(new Coordinates(1, 1))
+                        .collect(Collectors.toList())
+        );
+
+        worldToReset.placeBeeper(new Coordinates(2, 2));
+        worldToReset.placeBeeper(new Coordinates(2, 3));
+
+        Assertions.assertEquals(new World(
+                5,
+                5,
+                new ArrayList<>(),
+                Stream.of(
+                                new Coordinates(1, 1),
+                                new Coordinates(2, 2),
+                                new Coordinates(2, 3)
+                        )
+                        .collect(Collectors.toList())
+        ), worldToReset);
+    }
+
+    @Test
+    void resetting_the_world_removes_newly_placed_beepers() {
+        World worldToReset = new World(
+                5,
+                5,
+                new ArrayList<>(),
+                Stream.of(new Coordinates(1, 1))
+                        .collect(Collectors.toList())
+        );
+
+        worldToReset.placeBeeper(new Coordinates(2, 2));
+        worldToReset.placeBeeper(new Coordinates(2, 3));
+        worldToReset.resetToOriginalState();
+
+        Assertions.assertEquals(new World(
+                5,
+                5,
+                new ArrayList<>(),
+                Stream.of(new Coordinates(1, 1))
+                        .collect(Collectors.toList())
+        ), worldToReset);
+    }
 }

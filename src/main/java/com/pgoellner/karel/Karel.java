@@ -1,10 +1,13 @@
 package com.pgoellner.karel;
 
 import com.pgoellner.karel.geometry.Coordinates;
+import com.pgoellner.karel.geometry.Location;
 import com.pgoellner.karel.geometry.Orientation;
 import com.pgoellner.karel.parse.WorldFileParser;
 
 public class Karel {
+    private final Location<Orientation> startingLocation;
+
     private Coordinates currentLocation;
     private Orientation currentOrientation;
 
@@ -15,6 +18,7 @@ public class Karel {
     }
 
     Karel(World world, Coordinates startingPoint, Orientation startingOrientation) {
+        startingLocation = new Location<>(startingPoint, startingOrientation);
         currentLocation = startingPoint;
         currentOrientation = startingOrientation;
 
@@ -156,5 +160,10 @@ public class Karel {
             default:
                 return new Coordinates(-1, 0);
         }
+    }
+
+    void resetToStartingPosition() {
+        currentLocation = startingLocation.coordinates;
+        currentOrientation = startingLocation.content;
     }
 }

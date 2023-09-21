@@ -21,6 +21,10 @@ public class KarelTextField extends JPanel {
         g2D.fillRect(0, 0, getWidth(), getHeight());
     }
 
+    public void reset() {
+        currentColour = Color.BLACK;
+    }
+
     public void displayRunning() {
         currentColour = new Color(100, 95, 0);
     }

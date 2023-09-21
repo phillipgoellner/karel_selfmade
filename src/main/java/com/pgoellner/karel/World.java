@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.List;
 
 public final class World {
+    private final BackupWorld originalState;
+
     private final CoordinateSystem expanse;
 
     private final List<Location<Color>> colours;
@@ -25,6 +27,8 @@ public final class World {
     }
 
     public World(int x, int y, List<Location<Orientation>> walls, List<Coordinates> beepers, List<Location<Color>> colours) {
+        originalState = new BackupWorld(walls, beepers);
+
         expanse = new CoordinateSystem(new Coordinates(1, 1), new Coordinates(x, y));
 
         this.walls = walls;
@@ -128,6 +132,17 @@ public final class World {
     }
 
 
+    void resetToOriginalState() {
+        this.walls.clear();
+        this.walls.addAll(originalState.walls);
+
+        this.beepers.clear();
+        for (Coordinates beeperLocation : originalState.beepers) {
+            this.beepers.put(beeperLocation, 1 + this.beepers.getOrDefault(beeperLocation, 0));
+        }
+    }
+
+
     public String toString() {
         return String.format("Dim: (%s/%s) / Beepers: %s / Walls: %s",
                 expanse.xLimit(),
@@ -147,5 +162,15 @@ public final class World {
                     beepers.keySet().containsAll(otherWorld.beepers.keySet());
         }
         return false;
+    }
+}
+
+final class BackupWorld {
+    final List<Location<Orientation>> walls;
+    final List<Coordinates> beepers;
+
+    BackupWorld(List<Location<Orientation>> walls, List<Coordinates> beepers) {
+        this.walls = new ArrayList<>(walls);
+        this.beepers = new ArrayList<>(beepers);
     }
 }

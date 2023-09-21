@@ -51,7 +51,7 @@ public final class World {
         return expanse.allCoordinates();
     }
 
-    void putBeeper(Coordinates location) {
+    void placeBeeper(Coordinates location) {
         this.beepers.put(location, 1 + this.beepers.getOrDefault(location, 0));
     }
 

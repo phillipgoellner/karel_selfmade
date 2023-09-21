@@ -82,7 +82,7 @@ public class Karel {
     }
 
     public final void putBeeper() {
-        world.putBeeper(currentLocation);
+        world.placeBeeper(currentLocation);
         pause();
     }
 

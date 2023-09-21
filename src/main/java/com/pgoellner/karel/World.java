@@ -19,11 +19,11 @@ public final class World {
     private final List<Location<Orientation>> walls;
 
     World(int x, int y) {
-        this(x, y, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this(x, y, ArgumentList.of(), ArgumentList.of(), ArgumentList.of());
     }
 
     World(int x, int y, List<Location<Orientation>> walls, List<Coordinates> beepers) {
-        this(x, y, walls, beepers, new ArrayList<>());
+        this(x, y, walls, beepers, ArgumentList.of());
     }
 
     public World(int x, int y, List<Location<Orientation>> walls, List<Coordinates> beepers, List<Location<Color>> colours) {

@@ -18,7 +18,7 @@ class WorldFileParserTest {
 
     @Nested
     class WithoutContent {
-        WorldFileParser parser = new WorldFileParser(new ArrayList<>());
+        WorldFileParser parser = new WorldFileParser(ArgumentList.of());
 
         @Test
         void has_default_coordinates() {
@@ -37,7 +37,7 @@ class WorldFileParserTest {
         @Test
         void has_empty_world() {
             World parsedWorld = parser.fromDescription();
-            World expectedWorld = new World(5, 5, new ArrayList<>(), new ArrayList<>());
+            World expectedWorld = new World(5, 5, ArgumentList.of(), ArgumentList.of());
 
             Assertions.assertEquals(expectedWorld, parsedWorld);
         }
@@ -45,16 +45,18 @@ class WorldFileParserTest {
 
     @Nested
     class WithRegularContent {
-        WorldFileParser parser = new WorldFileParser(Stream.of(
-                "Dimension: (9, 9)",
-                "Wall: (1, 8) south",
-                "Beeper: (8, 8) 1",
-                "Karel: (4, 8) north",
-                "Color: (2, 2) RED",
-                "",
-                "BeeperBag: INFINITE",
-                "Speed: 0.50"
-        ).collect(Collectors.toList()));
+        WorldFileParser parser = new WorldFileParser(
+                ArgumentList.of(
+                        "Dimension: (9, 9)",
+                        "Wall: (1, 8) south",
+                        "Beeper: (8, 8) 1",
+                        "Karel: (4, 8) north",
+                        "Color: (2, 2) RED",
+                        "",
+                        "BeeperBag: INFINITE",
+                        "Speed: 0.50"
+                )
+        );
 
         @Test
         void parses_karel_starting_point() {
@@ -74,13 +76,11 @@ class WorldFileParserTest {
         void parses_world_data() {
             World parsedWorld = parser.fromDescription();
 
-            List<Location<Orientation>> walls = Stream
-                    .of(new Location<>(new Coordinates(1, 8), Orientation.SOUTH))
-                    .collect(Collectors.toList());
+            List<Location<Orientation>> walls = ArgumentList
+                    .of(new Location<>(new Coordinates(1, 8), Orientation.SOUTH));
 
-            List<Coordinates> beepers = Stream
-                    .of(new Coordinates(8, 8))
-                    .collect(Collectors.toList());
+            List<Coordinates> beepers = ArgumentList
+                    .of(new Coordinates(8, 8));
 
             World expectedWorld = new World(9, 9, walls, beepers);
 
@@ -91,17 +91,14 @@ class WorldFileParserTest {
         void parses_world_data_with_colours() {
             World parsedWorld = parser.fromDescription();
 
-            List<Location<Orientation>> walls = Stream
-                    .of(new Location<>(new Coordinates(1, 8), Orientation.SOUTH))
-                    .collect(Collectors.toList());
+            List<Location<Orientation>> walls = ArgumentList
+                    .of(new Location<>(new Coordinates(1, 8), Orientation.SOUTH));
 
-            List<Coordinates> beepers = Stream
-                    .of(new Coordinates(8, 8))
-                    .collect(Collectors.toList());
+            List<Coordinates> beepers = ArgumentList
+                    .of(new Coordinates(8, 8));
 
-            List<Location<Color>> colours = Stream
-                    .of(new Location<>(new Coordinates(2, 2), Color.RED))
-                    .collect(Collectors.toList());
+            List<Location<Color>> colours = ArgumentList
+                    .of(new Location<>(new Coordinates(2, 2), Color.RED));
 
             World expectedWorld = new World(9, 9, walls, beepers, colours);
 

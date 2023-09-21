@@ -17,11 +17,11 @@ class WorldTest {
     private final World world = new World(
             5,
             5,
-            Stream.of(
+            ArgumentList.of(
                     new Location<>(new Coordinates(2, 3), Orientation.EAST),
                     new Location<>(new Coordinates(4, 4), Orientation.SOUTH)
-            ).collect(Collectors.toList()),
-            new ArrayList<>()
+            ),
+            ArgumentList.of()
     );
 
     @ParameterizedTest
@@ -47,9 +47,8 @@ class WorldTest {
         World worldToReset = new World(
                 5,
                 5,
-                new ArrayList<>(),
-                Stream.of(new Coordinates(1, 1))
-                        .collect(Collectors.toList())
+                ArgumentList.of(),
+                ArgumentList.of(new Coordinates(1, 1))
         );
 
         worldToReset.placeBeeper(new Coordinates(2, 2));
@@ -58,13 +57,11 @@ class WorldTest {
         Assertions.assertEquals(new World(
                 5,
                 5,
-                new ArrayList<>(),
-                Stream.of(
-                                new Coordinates(1, 1),
-                                new Coordinates(2, 2),
-                                new Coordinates(2, 3)
-                        )
-                        .collect(Collectors.toList())
+                ArgumentList.of(),
+                ArgumentList.of(
+                        new Coordinates(1, 1),
+                        new Coordinates(2, 2),
+                        new Coordinates(2, 3))
         ), worldToReset);
     }
 
@@ -73,9 +70,8 @@ class WorldTest {
         World worldToReset = new World(
                 5,
                 5,
-                new ArrayList<>(),
-                Stream.of(new Coordinates(1, 1))
-                        .collect(Collectors.toList())
+                ArgumentList.of(),
+                ArgumentList.of(new Coordinates(1, 1))
         );
 
         worldToReset.placeBeeper(new Coordinates(2, 2));
@@ -85,9 +81,8 @@ class WorldTest {
         Assertions.assertEquals(new World(
                 5,
                 5,
-                new ArrayList<>(),
-                Stream.of(new Coordinates(1, 1))
-                        .collect(Collectors.toList())
+                ArgumentList.of(),
+                ArgumentList.of(new Coordinates(1, 1))
         ), worldToReset);
     }
 }

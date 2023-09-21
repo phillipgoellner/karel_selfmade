@@ -16,7 +16,7 @@ class WallLocationTest {
     @ParameterizedTest
     @MethodSource
     void generates_opposite_WallLocation(Location<Orientation> original, Location<Orientation> expectedResult) {
-        Assertions.assertEquals(expectedResult, new World(0, 0, new ArrayList<>(), new ArrayList<>()).oppositeWallLocation(original));
+        Assertions.assertEquals(expectedResult, new World(0, 0, ArgumentList.of(), ArgumentList.of()).oppositeWallLocation(original));
     }
 
     private static Stream<Arguments> generates_opposite_WallLocation() {

@@ -10,6 +10,12 @@ final class UiBuilder {
     }
 
     static void createWindow(Karel karel, World world, String programTitle) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         JFrame window = new JFrame(programTitle);
 
         JPanel mainPanel = new JPanel();
@@ -34,6 +40,7 @@ final class UiBuilder {
 
     private static JPanel createControls(Karel karel, World world, JFrame window) {
         JPanel controls = new JPanel();
+        controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
 
         KarelTextField text = new KarelTextField("Welcome to Karel!");
         controls.add(text);

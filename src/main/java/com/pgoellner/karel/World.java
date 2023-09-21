@@ -67,11 +67,11 @@ public final class World {
         return beepers.getOrDefault(location, 0);
     }
 
-    public List<Location<Orientation>> allWalls() {
+    List<Location<Orientation>> allWalls() {
         return new ArrayList<>(walls);
     }
 
-    public List<Location<Color>> allColours() {
+    List<Location<Color>> allColours() {
         return new ArrayList<>(colours);
     }
 

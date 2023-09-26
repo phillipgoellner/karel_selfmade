@@ -137,29 +137,28 @@ public class KarelCanvas extends JPanel {
         final FieldCorners corners = getRenderCorners(location.mirrorOnY(fieldHeight()).minus(Coordinates.UNIT));
         final Coordinates topLeftCorner = corners.topLeft;
 
-        drawer.setColor(Color.RED);
-        drawer.fillRect(
-                topLeftCorner.x + scale(spriteSide(), 10),
-                topLeftCorner.y + scale(spriteSide(), 10),
-                scale(spriteSide(), 80),
-                scale(spriteSide(), 80)
-        );
+        final KarelSprite sprite = new KarelSprite(topLeftCorner, karel.facing(), spriteSide());
+
+        drawer.setColor(Color.WHITE);
+
+        sprite.bodyParts().forEach(drawer::fillPolygon);
 
         drawer.setColor(Color.BLACK);
-        switch (karel.facing()) {
-            case EAST:
-                drawer.drawLine(topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50), topLeftCorner.x + spriteSide(), topLeftCorner.y + scale(spriteSide(), 50));
-                break;
-            case SOUTH:
-                drawer.drawLine(topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + spriteSide(), topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50));
-                break;
-            case WEST:
-                drawer.drawLine(topLeftCorner.x, topLeftCorner.y + scale(spriteSide(), 50), topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50));
-                break;
-            default:
-                drawer.drawLine(topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y, topLeftCorner.x + scale(spriteSide(), 50), topLeftCorner.y + scale(spriteSide(), 50));
-                break;
-        }
+
+        drawer.drawPolygon(sprite.bodyWindow());
+        drawer.drawPolygon(sprite.bodyOutline());
+
+        drawer.fillPolygon(sprite.topLeg());
+        drawer.fillPolygon(sprite.bottomLeg());
+
+        KarelSprite.Mouth mouth = sprite.mouth();
+
+        drawer.drawLine(
+                mouth.left.x,
+                mouth.left.y,
+                mouth.right.x,
+                mouth.right.y
+        );
     }
 
     private void drawColours(Graphics2D drawer) {

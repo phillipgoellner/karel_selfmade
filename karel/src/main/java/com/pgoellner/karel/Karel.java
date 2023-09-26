@@ -61,7 +61,13 @@ public class Karel {
     }
 
     public void run() {
-        // to be overridden in subclass
+        while (true) {
+            while(frontIsClear()) {
+                putBeeper();
+                move();
+            }
+            turnLeft();
+        }
     }
 
     private void pause() {

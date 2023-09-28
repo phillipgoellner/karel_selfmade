@@ -2,7 +2,7 @@ name: publish-project
 run-name: Build, package and publish karel by pgoellner
 on: [push]
 jobs:
-  run-tests:
+  test-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,3 +12,4 @@ jobs:
           java-version: '8'
           cache: 'gradle'
       - run: ./gradlew test --no-daemon
+      - run: ./gradlew publish --no-daemon -Pgpr.user=phillipgoellner -Pgpr.key=${{ secrets.PACKAGES_TOKEN }}

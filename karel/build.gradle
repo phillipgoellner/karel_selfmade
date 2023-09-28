@@ -1,11 +1,9 @@
-
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'maven-publish'
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
@@ -20,10 +18,21 @@ java {
     }
 }
 
+version = gitHash()
+
+private String gitHash() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
 jar {
     manifest {
         attributes 'Implementation-Title': project.name,
-                'Implementation-Version': project.version
+                'Implementation-Version': gitHash()
     }
 }
 
@@ -38,6 +47,25 @@ tasks.named('test', Test) {
             def startItem = '|  ', endItem = '  |'
             def repeatLength = startItem.length() + output.length() + endItem.length()
             println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/phillipgoellner/karel_selfmade")
+            credentials {
+                username = project.findProperty("gpr.user")
+                password = project.findProperty("gpr.key")
+            }
+        }
+    }
+
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
         }
     }
 }

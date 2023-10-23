@@ -41,11 +41,26 @@ public class CoordinateSystem {
     }
 
     private static Coordinates rotate(Coordinates centreOfRotation, Coordinates pointToRotate, int degrees) {
+        if (degrees == 45) {
+            return rotate45Degrees(centreOfRotation, pointToRotate);
+        }
+
         final Coordinates pointRelativeToOrigin = pointToRotate.minus(centreOfRotation);
 
         final Coordinates pointRotatedAroundOrigin = new Coordinates(
                 pointRelativeToOrigin.x * cos(degrees) - pointRelativeToOrigin.y * sin(degrees),
                 pointRelativeToOrigin.x * sin(degrees) + pointRelativeToOrigin.y * cos(degrees)
+        );
+
+        return pointRotatedAroundOrigin.plus(centreOfRotation);
+    }
+
+    private static Coordinates rotate45Degrees(Coordinates centreOfRotation, Coordinates pointToRotate) {
+        final Coordinates pointRelativeToOrigin = pointToRotate.minus(centreOfRotation);
+
+        final Coordinates pointRotatedAroundOrigin = new Coordinates(
+                (int) (0.707d * (pointRelativeToOrigin.x - pointRelativeToOrigin.y)),
+                (int) (0.707d * (pointRelativeToOrigin.x + pointRelativeToOrigin.y))
         );
 
         return pointRotatedAroundOrigin.plus(centreOfRotation);
@@ -60,10 +75,13 @@ public class CoordinateSystem {
 
         switch (degrees) {
             case 90:
-            case -270: return 1;
+            case -270:
+                return 1;
             case -90:
-            case 270: return -1;
-            default: return 0;
+            case 270:
+                return -1;
+            default:
+                return 0;
         }
     }
 
@@ -75,10 +93,13 @@ public class CoordinateSystem {
         }
 
         switch (degrees) {
-            case 0: return 1;
+            case 0:
+                return 1;
             case -180:
-            case 180: return -1;
-            default: return 0;
+            case 180:
+                return -1;
+            default:
+                return 0;
         }
     }
 }

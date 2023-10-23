@@ -86,48 +86,35 @@ public class KarelCanvas extends JPanel {
     }
 
     private void drawBeepers(Graphics2D drawer) {
+
         final int xOffset = scale(getWidth() - systemWidthPx(), 50);
         final int yOffset = scale(getHeight() - systemHeightPx(), 50);
 
-        for (Coordinates point : world.allCoordinates()) {
-            final int numberOfBeepers = world.numberOfBeepersAt(point);
+        world.beeperLocations()
+                .stream()
+                .map(point -> getRenderCorners(point.mirrorOnY(fieldHeight()).minus(Coordinates.UNIT)))
+                .map(corners -> corners.topLeft)
+                .map(topLeftCorner -> new BeeperSprite(topLeftCorner, spriteSide()).outline())
+                .forEach(beeperFigure -> {
+                    drawer.setColor(Color.LIGHT_GRAY);
+                    drawer.fillPolygon(beeperFigure);
+                    drawer.setColor(Color.DARK_GRAY);
+                    drawer.drawPolygon(beeperFigure);
+                });
 
-            if (numberOfBeepers > 0) {
+        for (Coordinates point : world.beeperLocations()) {
+            final int numberOfBeepersAtLocation = world.numberOfBeepersAt(point);
+
+            if (numberOfBeepersAtLocation > 1) {
                 final Coordinates renderCoordinates = point.mirrorOnY(fieldHeight());
-
                 final int _x = (renderCoordinates.x - 1) * spriteSide() + xOffset;
                 final int _y = (renderCoordinates.y - 1) * spriteSide() + yOffset;
 
-                final int beeperMargin = scale(spriteSide(), 10);
-
-                Polygon beeperFigure = new Polygon(
-                        new int[]{
-                                _x + scale(spriteSide(), 50),
-                                _x + spriteSide() - beeperMargin,
-                                _x + scale(spriteSide(), 50),
-                                _x + beeperMargin
-                        },
-                        new int[]{
-                                _y + beeperMargin,
-                                _y + scale(spriteSide(), 50),
-                                _y + spriteSide() - beeperMargin,
-                                _y + scale(spriteSide(), 50)
-                        },
-                        4
+                drawer.drawString(
+                        "" + numberOfBeepersAtLocation,
+                        _x + scale(spriteSide(), 50) - 4,
+                        _y + scale(spriteSide(), 50) + 5
                 );
-
-                drawer.setColor(Color.LIGHT_GRAY);
-                drawer.fillPolygon(beeperFigure);
-                drawer.setColor(Color.DARK_GRAY);
-                drawer.drawPolygon(beeperFigure);
-
-                if (numberOfBeepers > 1) {
-                    drawer.drawString(
-                            "" + numberOfBeepers,
-                            _x + scale(spriteSide(), 50) - 4,
-                            _y + scale(spriteSide(), 50) + 5
-                    );
-                }
             }
         }
     }

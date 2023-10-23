@@ -18,6 +18,8 @@ public final class World {
     private final Map<Coordinates, Integer> beepers;
     private final List<Location<Orientation>> walls;
 
+    private Set<Coordinates> cachedBeeperLocations;
+
     World(int x, int y) {
         this(x, y, ArgumentList.of(), ArgumentList.of(), ArgumentList.of());
     }
@@ -37,6 +39,8 @@ public final class World {
         for (Coordinates beeperLocation : beepers) {
             this.beepers.put(beeperLocation, 1 + this.beepers.getOrDefault(beeperLocation, 0));
         }
+
+        cachedBeeperLocations = this.beepers.keySet();
     }
 
     int xDimension() {
@@ -47,12 +51,9 @@ public final class World {
         return expanse.yLimit();
     }
 
-    List<Coordinates> allCoordinates() {
-        return expanse.allCoordinates();
-    }
-
     void placeBeeper(Coordinates location) {
         this.beepers.put(location, 1 + this.beepers.getOrDefault(location, 0));
+        cachedBeeperLocations = new HashSet<>(this.beepers.keySet());
     }
 
     void removeBeeper(Coordinates location) {
@@ -65,6 +66,10 @@ public final class World {
 
     int numberOfBeepersAt(Coordinates location) {
         return beepers.getOrDefault(location, 0);
+    }
+
+    Set<Coordinates> beeperLocations() {
+        return cachedBeeperLocations;
     }
 
     List<Location<Orientation>> allWalls() {

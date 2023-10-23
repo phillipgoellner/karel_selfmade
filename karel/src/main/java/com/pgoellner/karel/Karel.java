@@ -32,6 +32,9 @@ public class Karel {
 
         WorldFileParser parser = new WorldFileParser(
                 String.format("src/worlds/%s.w", worldFileName),
+                String.format("src/main/resources/worlds/%s.w", worldFileName),
+                String.format("main/resources/worlds/%s.w", worldFileName),
+                String.format("resources/worlds/%s.w", worldFileName),
                 String.format("worlds/%s.w", worldFileName)
         );
         World world = parser.fromDescription();
@@ -61,7 +64,7 @@ public class Karel {
     }
 
     public void run() {
-        while (true) {
+        for (int i = 0; i < 21; i++) {
             while(frontIsClear()) {
                 putBeeper();
                 move();
@@ -71,7 +74,7 @@ public class Karel {
     }
 
     private void pause() {
-        Timer.pause(70L);
+        Timer.pause(1L);
     }
 
     public final void move() {

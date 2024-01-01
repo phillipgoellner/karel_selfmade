@@ -1,5 +1,7 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.localization.TextLabels;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 final class UiBuilder {
+    static final TextLabels labels = TextLabels.systemDefaults();
+
     private UiBuilder() {
     }
 
@@ -43,16 +47,16 @@ final class UiBuilder {
         JPanel controls = new JPanel();
         controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
 
-        KarelTextField text = new KarelTextField("Welcome to Karel!");
+        KarelTextField text = new KarelTextField(labels.welcomeMessage());
         controls.add(text);
 
         KarelButtonListener buttonListener = new KarelButtonListener(karel, world, window, text);
 
-        JButton play = new JButton("Start Program");
+        JButton play = new JButton(labels.startButtonText());
         play.addActionListener(buttonListener);
         controls.add(play);
 
-        JButton reset = new JButton("Reset Program");
+        JButton reset = new JButton(labels.resetButtonText());
         reset.addActionListener(buttonListener);
         controls.add(reset);
         return controls;
@@ -60,8 +64,6 @@ final class UiBuilder {
 }
 
 class KarelButtonListener implements ActionListener {
-    private static final String ERROR_MESSAGE = "Error!\nOriginated in %s line %d";
-
     private final Karel program;
     private final World world;
     private final JFrame window;
@@ -80,10 +82,11 @@ class KarelButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JButton) {
             JButton source = (JButton) e.getSource();
-            switch (source.getText()) {
-                case "Start Program": startProgram(); break;
-                case "Reset Program": resetProgram(); break;
-                default: break;
+            String text = source.getText();
+            if (text.equals(UiBuilder.labels.startButtonText())) {
+                startProgram();
+            } else if (text.equals(UiBuilder.labels.resetButtonText())) {
+                resetProgram();
             }
         }
     }
@@ -134,7 +137,11 @@ class KarelButtonListener implements ActionListener {
         final String errorClass = errorOrigin.getClassName();
         final int errorLineNumber = errorOrigin.getLineNumber();
 
-        JOptionPane.showMessageDialog(window, String.format(ERROR_MESSAGE, errorClass, errorLineNumber), "Error D:", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(
+                window,
+                String.format(UiBuilder.labels.karelCodeErrorMessage(), errorClass, errorLineNumber),
+                UiBuilder.labels.karelCodeErrorTitle(),
+                JOptionPane.ERROR_MESSAGE);
     }
 
     private void resetProgram() {

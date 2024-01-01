@@ -1,9 +1,12 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.localization.TextLabels;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class KarelTextField extends JPanel {
+    private static final TextLabels labels = TextLabels.systemDefaults();
     private String textToRender;
     private Color currentColour;
 
@@ -25,21 +28,21 @@ public class KarelTextField extends JPanel {
 
     public void reset() {
         currentColour = Color.BLACK;
-        textToRender = "Program reset";
+        textToRender = labels.textFieldReset();
     }
 
     public void displayRunning() {
         currentColour = Color.ORANGE;
-        textToRender = "Running...";
+        textToRender = labels.textFieldRunning();
     }
 
     public void displayError() {
         currentColour = Color.RED;
-        textToRender = "Error :(";
+        textToRender = labels.textFieldError();
     }
 
     public void displaySucceeded() {
         currentColour = Color.GREEN;
-        textToRender = "Finished!";
+        textToRender = labels.textFieldSuccess();
     }
 }

@@ -145,6 +145,7 @@ public final class World {
         for (Coordinates beeperLocation : originalState.beepers) {
             this.beepers.put(beeperLocation, 1 + this.beepers.getOrDefault(beeperLocation, 0));
         }
+        cachedBeeperLocations = this.beepers.keySet();
     }
 
 

@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class WorldFileParser {
     private List<String> lines;
@@ -30,9 +31,10 @@ public class WorldFileParser {
     public WorldFileParser(String... possiblePathsToWorldFile) {
         for (String pathToWorldFile : possiblePathsToWorldFile) {
             Path path = Paths.get(pathToWorldFile);
-            try {
-                if (Files.exists(path))
-                    this.lines = Files.lines(path).collect(Collectors.toList());
+            try (Stream<String> lineStream = Files.lines(path)) {
+                if (Files.exists(path)) {
+                    this.lines = lineStream.collect(Collectors.toList());
+                }
             } catch (IOException e) {
                 System.err.printf("Could not load content of file %s%n", path.toAbsolutePath());
             }

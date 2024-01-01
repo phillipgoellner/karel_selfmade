@@ -14,7 +14,7 @@ final class UiBuilder {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new CouldNotGetLookAndFeel(e);
         }
 
         JFrame window = new JFrame(programTitle);
@@ -35,7 +35,7 @@ final class UiBuilder {
 
         window.add(mainPanel);
         window.setMinimumSize(new Dimension(900, 600));
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setVisible(true);
     }
 

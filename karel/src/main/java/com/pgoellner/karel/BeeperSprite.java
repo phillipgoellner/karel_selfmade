@@ -2,7 +2,6 @@ package com.pgoellner.karel;
 
 import com.pgoellner.karel.geometry.CoordinateSystem;
 import com.pgoellner.karel.geometry.Coordinates;
-import com.pgoellner.karel.geometry.Orientation;
 
 import java.awt.*;
 import java.util.List;

@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 final class UiBuilder {
     private UiBuilder() {
@@ -59,6 +60,8 @@ final class UiBuilder {
 }
 
 class KarelButtonListener implements ActionListener {
+    private static final String ERROR_MESSAGE = "Error!\nOriginated in %s line %d";
+
     private final Karel program;
     private final World world;
     private final JFrame window;
@@ -93,9 +96,10 @@ class KarelButtonListener implements ActionListener {
                     textField.displayRunning();
                     program.run();
                     textField.displaySucceeded();
-                    running = false;
                 } catch (WallCollision collision) {
-                    textField.displayError();
+                    display(collision);
+                } finally {
+                    running = false;
                 }
             });
 
@@ -109,6 +113,28 @@ class KarelButtonListener implements ActionListener {
             mainLoop.start();
             rendering.start();
         }
+    }
+
+    private void display(RuntimeException error) {
+        textField.displayError();
+
+        final StackTraceElement errorOrigin = Arrays
+                .stream(error.getStackTrace())
+                .filter(
+                        stackTraceElement -> {
+                            final String className = stackTraceElement.getClassName();
+                            return !className.equals("com.pgoellner.karel.KarelButtonListener") &&
+                                    !className.equals("com.pgoellner.karel.Karel") &&
+                                    !className.equals("java.lang.Thread");
+                        }
+                )
+                .findFirst()
+                .orElse(new StackTraceElement("", "", "", -1));
+
+        final String errorClass = errorOrigin.getClassName();
+        final int errorLineNumber = errorOrigin.getLineNumber();
+
+        JOptionPane.showMessageDialog(window, String.format(ERROR_MESSAGE, errorClass, errorLineNumber), "Error D:", JOptionPane.ERROR_MESSAGE);
     }
 
     private void resetProgram() {

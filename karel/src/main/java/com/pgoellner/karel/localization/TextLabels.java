@@ -1,8 +1,13 @@
 package com.pgoellner.karel.localization;
 
+import java.util.Locale;
+
 public interface TextLabels {
     static TextLabels systemDefaults() {
-        return new EnglishLabels();
+        switch (Locale.getDefault().getLanguage()) {
+            case "de": return new GermanLabels();
+            default: return new EnglishLabels();
+        }
     }
 
     String welcomeMessage();

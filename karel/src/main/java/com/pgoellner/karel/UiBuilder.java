@@ -3,6 +3,8 @@ package com.pgoellner.karel;
 import com.pgoellner.karel.localization.TextLabels;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +16,7 @@ final class UiBuilder {
     private UiBuilder() {
     }
 
-    static void createWindow(Karel karel, World world, String programTitle) {
+    static void createWindow(Karel karel, World world, String programTitle, KarelSpeedSetting speedSetting) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -30,7 +32,7 @@ final class UiBuilder {
         layout.addLayoutComponent(canvas, BorderLayout.CENTER);
         mainPanel.add(canvas);
 
-        JPanel controls = createControls(karel, world, window);
+        JPanel controls = createControls(karel, world, window, speedSetting);
 
         layout.addLayoutComponent(controls, BorderLayout.WEST);
         mainPanel.add(controls);
@@ -43,12 +45,21 @@ final class UiBuilder {
         window.setVisible(true);
     }
 
-    private static JPanel createControls(Karel karel, World world, JFrame window) {
+    private static JPanel createControls(Karel karel, World world, JFrame window, KarelSpeedSetting speedSetting) {
         JPanel controls = new JPanel();
         controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
 
         KarelTextField text = new KarelTextField(labels.welcomeMessage());
         controls.add(text);
+
+        JSlider speedSlider = new JSlider(SwingConstants.HORIZONTAL,0, 10, 5);
+        speedSlider.setSnapToTicks(true);
+        speedSlider.setMajorTickSpacing(5);
+        speedSlider.setMinorTickSpacing(1);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setPaintLabels(true);
+        speedSlider.addChangeListener(new KarelSliderListener(speedSetting));
+        controls.add(speedSlider);
 
         KarelButtonListener buttonListener = new KarelButtonListener(karel, world, window, text);
 
@@ -60,6 +71,20 @@ final class UiBuilder {
         reset.addActionListener(buttonListener);
         controls.add(reset);
         return controls;
+    }
+}
+
+class KarelSliderListener implements ChangeListener {
+    private final KarelSpeedSetting speedSetting;
+    public KarelSliderListener(KarelSpeedSetting speedSetting) {
+        this.speedSetting = speedSetting;
+    }
+
+    public void stateChanged(ChangeEvent e) {
+        JSlider source = (JSlider)e.getSource();
+        if (!source.getValueIsAdjusting()) {
+            speedSetting.newValue(source.getValue());
+        }
     }
 }
 

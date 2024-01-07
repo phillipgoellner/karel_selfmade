@@ -6,12 +6,14 @@ import com.pgoellner.karel.geometry.Orientation;
 import com.pgoellner.karel.parse.WorldFileParser;
 
 public class Karel {
+    private static final KarelSpeedSetting speedSetting = new KarelSpeedSetting(5);
     private final Location<Orientation> startingLocation;
 
     private Coordinates currentLocation;
     private Orientation currentOrientation;
 
     private World world;
+
 
     public Karel() {
         this(new World(5, 5), new Coordinates(1, 1), Orientation.EAST);
@@ -47,7 +49,8 @@ public class Karel {
         UiBuilder.createWindow(
                 karel,
                 world,
-                programName
+                programName,
+                speedSetting
         );
     }
 
@@ -74,7 +77,7 @@ public class Karel {
     }
 
     private void pause() {
-        Timer.pause(1L);
+        Timer.pause(100L - (10L * speedSetting.value()));
     }
 
     public final void move() {

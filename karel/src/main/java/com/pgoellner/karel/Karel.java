@@ -7,7 +7,7 @@ import com.pgoellner.karel.parse.WorldFileParser;
 
 public class Karel {
     private static final KarelSpeedSetting speedSetting = new KarelSpeedSetting(5);
-    private final Location<Orientation> startingLocation;
+    private Location<Orientation> startingLocation;
 
     private Coordinates currentLocation;
     private Orientation currentOrientation;
@@ -45,6 +45,7 @@ public class Karel {
         karel.world = world;
         karel.currentLocation = parser.karelStartingPoint();
         karel.currentOrientation = parser.karelStartingOrientation();
+        karel.startingLocation = new Location<>(parser.karelStartingPoint(), parser.karelStartingOrientation());
 
         UiBuilder.createWindow(
                 karel,

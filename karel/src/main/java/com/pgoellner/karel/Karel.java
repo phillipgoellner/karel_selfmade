@@ -33,10 +33,6 @@ public class Karel {
         String worldFileName = programName.replace("com.pgoellner.karel.", "");
 
         WorldFileParser parser = new WorldFileParser(
-                String.format("src/worlds/%s.w", worldFileName),
-                String.format("src/main/resources/worlds/%s.w", worldFileName),
-                String.format("main/resources/worlds/%s.w", worldFileName),
-                String.format("resources/worlds/%s.w", worldFileName),
                 String.format("worlds/%s.w", worldFileName)
         );
         World world = parser.fromDescription();

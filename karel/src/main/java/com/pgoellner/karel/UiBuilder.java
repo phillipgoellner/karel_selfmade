@@ -1,6 +1,7 @@
 package com.pgoellner.karel;
 
 import com.pgoellner.karel.localization.TextLabels;
+import com.pgoellner.karel.parse.WorldFileParser;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -12,6 +13,8 @@ import java.util.Arrays;
 
 final class UiBuilder {
     static final TextLabels labels = TextLabels.systemDefaults();
+
+    private static KarelCanvas currentCanvas;
 
     private UiBuilder() {
     }
@@ -28,9 +31,9 @@ final class UiBuilder {
         JPanel mainPanel = new JPanel();
         BorderLayout layout = new BorderLayout();
 
-        KarelCanvas canvas = new KarelCanvas(karel, world);
-        layout.addLayoutComponent(canvas, BorderLayout.CENTER);
-        mainPanel.add(canvas);
+        currentCanvas = new KarelCanvas(karel, world);
+        layout.addLayoutComponent(currentCanvas, BorderLayout.CENTER);
+        mainPanel.add(currentCanvas);
 
         JPanel controls = createControls(karel, world, window, speedSetting);
 
@@ -76,7 +79,15 @@ final class UiBuilder {
         JButton reset = new JButton(labels.resetButtonText());
         reset.addActionListener(buttonListener);
         controls.add(reset);
+
+        JButton load = new JButton(labels.moreWorldsButtonText());
+        load.addActionListener(buttonListener);
+        controls.add(load);
         return controls;
+    }
+
+    static void newWorld(World newOne) {
+        currentCanvas.newWorld(newOne);
     }
 }
 
@@ -96,7 +107,7 @@ class KarelSliderListener implements ChangeListener {
 
 class KarelButtonListener implements ActionListener {
     private final Karel program;
-    private final World world;
+    private World world;
     private final JFrame window;
     private final KarelTextField textField;
     private boolean running;
@@ -118,6 +129,8 @@ class KarelButtonListener implements ActionListener {
                 startProgram();
             } else if (text.equals(UiBuilder.labels.resetButtonText())) {
                 resetProgram();
+            } else if (text.equals(UiBuilder.labels.moreWorldsButtonText())) {
+                selectNewWorld();
             }
         }
     }
@@ -180,6 +193,20 @@ class KarelButtonListener implements ActionListener {
             program.resetToStartingPosition();
             world.resetToOriginalState();
             textField.reset();
+        }
+    }
+
+    private void selectNewWorld() {
+        JFileChooser fc = new JFileChooser("./worlds");
+        int returnVal = fc.showOpenDialog(window);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            WorldFileParser parser = new WorldFileParser(fc.getSelectedFile().getAbsolutePath());
+            World newWorld = parser.fromDescription();
+            this.world = newWorld;
+            Karel.setGameState(program, newWorld, parser);
+            UiBuilder.newWorld(newWorld);
+            window.repaint();
         }
     }
 }

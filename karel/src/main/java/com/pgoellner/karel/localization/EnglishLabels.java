@@ -22,6 +22,11 @@ public class EnglishLabels implements TextLabels {
     }
 
     @Override
+    public String moreWorldsButtonText() {
+        return "Load Other Worlds";
+    }
+
+    @Override
     public String karelCodeErrorTitle() {
         return "Error D:";
     }

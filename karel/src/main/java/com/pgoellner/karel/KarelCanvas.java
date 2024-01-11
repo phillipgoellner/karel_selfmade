@@ -10,11 +10,15 @@ import java.awt.*;
 
 public class KarelCanvas extends JPanel {
     private final transient Karel karel;
-    private final transient World world;
+    private transient World world;
 
     public KarelCanvas(Karel karel, World world) {
         this.karel = karel;
         this.world = world;
+    }
+
+    void newWorld(World newWorld) {
+        world = newWorld;
     }
 
     private int spriteSide() {

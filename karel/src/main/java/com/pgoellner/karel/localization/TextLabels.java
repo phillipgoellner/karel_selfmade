@@ -14,6 +14,7 @@ public interface TextLabels {
     String speedSliderTitle();
     String startButtonText();
     String resetButtonText();
+    String moreWorldsButtonText();
 
     String karelCodeErrorTitle();
     String karelCodeErrorMessage();

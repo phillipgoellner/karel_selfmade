@@ -38,10 +38,7 @@ public class Karel {
         World world = parser.fromDescription();
 
         Karel karel = karelInstance(programName);
-        karel.world = world;
-        karel.currentLocation = parser.karelStartingPoint();
-        karel.currentOrientation = parser.karelStartingOrientation();
-        karel.startingLocation = new Location<>(parser.karelStartingPoint(), parser.karelStartingOrientation());
+        setGameState(karel, world, parser);
 
         UiBuilder.createWindow(
                 karel,
@@ -61,6 +58,13 @@ public class Karel {
 
     private static Karel karelInstance(String fromProgramName) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         return (Karel) Class.forName(fromProgramName).newInstance();
+    }
+
+    static void setGameState(Karel karel, World world, WorldFileParser parser) {
+        karel.world = world;
+        karel.currentLocation = parser.karelStartingPoint();
+        karel.currentOrientation = parser.karelStartingOrientation();
+        karel.startingLocation = new Location<>(parser.karelStartingPoint(), parser.karelStartingOrientation());
     }
 
     public void run() {

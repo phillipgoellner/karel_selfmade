@@ -11,6 +11,7 @@ public interface TextLabels {
     }
 
     String welcomeMessage();
+    String speedSliderTitle();
     String startButtonText();
     String resetButtonText();
 

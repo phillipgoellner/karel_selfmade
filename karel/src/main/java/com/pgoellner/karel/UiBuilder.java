@@ -47,11 +47,15 @@ final class UiBuilder {
 
     private static JPanel createControls(Karel karel, World world, JFrame window, KarelSpeedSetting speedSetting) {
         JPanel controls = new JPanel();
-        controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
+        GridLayout gridLayout = new GridLayout(10, 1);
+        gridLayout.setVgap(10);
+        controls.setLayout(gridLayout);
 
         KarelTextField text = new KarelTextField(labels.welcomeMessage());
         controls.add(text);
+        controls.add(new JLabel(""));
 
+        JLabel speedTitle = new JLabel(labels.speedSliderTitle());
         JSlider speedSlider = new JSlider(SwingConstants.HORIZONTAL,0, 10, 5);
         speedSlider.setSnapToTicks(true);
         speedSlider.setMajorTickSpacing(5);
@@ -59,7 +63,9 @@ final class UiBuilder {
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
         speedSlider.addChangeListener(new KarelSliderListener(speedSetting));
+        controls.add(speedTitle);
         controls.add(speedSlider);
+        controls.add(new JLabel(""));
 
         KarelButtonListener buttonListener = new KarelButtonListener(karel, world, window, text);
 

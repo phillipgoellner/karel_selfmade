@@ -5,6 +5,12 @@ public class GermanLabels implements TextLabels {
     public String welcomeMessage() {
         return "Willkommen bei Karel!";
     }
+
+    @Override
+    public String speedSliderTitle() {
+        return "  Karels Geschwindigkeit";
+    }
+
     @Override
     public String startButtonText() {
         return "Programm starten";

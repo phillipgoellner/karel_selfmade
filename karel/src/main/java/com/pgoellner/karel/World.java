@@ -8,6 +8,7 @@ import com.pgoellner.karel.geometry.Orientation;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class World {
     private final BackupWorld originalState;
@@ -53,7 +54,7 @@ public final class World {
 
     void placeBeeper(Coordinates location) {
         this.beepers.put(location, 1 + this.beepers.getOrDefault(location, 0));
-        cachedBeeperLocations = new HashSet<>(this.beepers.keySet());
+        cachedBeeperLocations = this.beepers.keySet().stream().filter(beeperLocation -> this.beepers.get(beeperLocation) > 0).collect(Collectors.toSet());
     }
 
     void removeBeeper(Coordinates location) {
@@ -62,6 +63,7 @@ public final class World {
         if (currentNumberOfBeepers > 0) {
             this.beepers.put(location, currentNumberOfBeepers - 1);
         }
+        cachedBeeperLocations = this.beepers.keySet().stream().filter(beeperLocation -> this.beepers.get(beeperLocation) > 0).collect(Collectors.toSet());
     }
 
     int numberOfBeepersAt(Coordinates location) {

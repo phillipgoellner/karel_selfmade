@@ -1,5 +1,6 @@
-package com.pgoellner.karel;
+package com.pgoellner.karel.geometry;
 
+import com.pgoellner.karel.ArgumentList;
 import com.pgoellner.karel.geometry.CoordinateSystem;
 import com.pgoellner.karel.geometry.Coordinates;
 import org.junit.jupiter.api.Assertions;

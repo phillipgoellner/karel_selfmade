@@ -1,4 +1,4 @@
-package com.pgoellner.karel;
+package com.pgoellner.karel.geometry;
 
 import com.pgoellner.karel.geometry.Orientation;
 import org.junit.jupiter.api.Assertions;

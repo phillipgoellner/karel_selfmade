@@ -1,10 +1,7 @@
 package com.pgoellner.karel.geometry;
 
 import com.pgoellner.karel.ArgumentList;
-import com.pgoellner.karel.geometry.CoordinateSystem;
-import com.pgoellner.karel.geometry.Coordinates;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

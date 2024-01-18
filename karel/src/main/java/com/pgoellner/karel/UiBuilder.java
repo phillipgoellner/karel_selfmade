@@ -1,5 +1,7 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.errors.CouldNotGetLookAndFeel;
+import com.pgoellner.karel.errors.WallCollision;
 import com.pgoellner.karel.localization.TextLabels;
 import com.pgoellner.karel.parse.WorldFileParser;
 

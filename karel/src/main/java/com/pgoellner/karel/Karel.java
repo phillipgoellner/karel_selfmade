@@ -1,5 +1,6 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.errors.WallCollision;
 import com.pgoellner.karel.geometry.Coordinates;
 import com.pgoellner.karel.geometry.Location;
 import com.pgoellner.karel.geometry.Orientation;

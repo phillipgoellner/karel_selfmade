@@ -33,7 +33,17 @@ public class EnglishLabels implements TextLabels {
 
     @Override
     public String karelCodeErrorMessage() {
-        return "Error!\nOriginated in %s line %d";
+        return "%s!\nOriginated in %s line %d";
+    }
+
+    @Override
+    public String noBeepersErrorMessage() {
+        return "No Beeper to pick up";
+    }
+
+    @Override
+    public String wallCollisionErrorMessage() {
+        return "Oh no, a wall";
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.pgoellner.karel;
 
+import com.pgoellner.karel.errors.NoBeeperPresent;
 import com.pgoellner.karel.geometry.CoordinateSystem;
 import com.pgoellner.karel.geometry.Coordinates;
 import com.pgoellner.karel.geometry.Location;
@@ -60,9 +61,11 @@ public final class World {
     void removeBeeper(Coordinates location) {
         int currentNumberOfBeepers = this.beepers.getOrDefault(location, 0);
 
-        if (currentNumberOfBeepers > 0) {
-            this.beepers.put(location, currentNumberOfBeepers - 1);
+        if (currentNumberOfBeepers <= 0) {
+            throw new NoBeeperPresent();
         }
+
+        this.beepers.put(location, currentNumberOfBeepers - 1);
         cachedBeeperLocations = this.beepers.keySet().stream().filter(beeperLocation -> this.beepers.get(beeperLocation) > 0).collect(Collectors.toSet());
     }
 

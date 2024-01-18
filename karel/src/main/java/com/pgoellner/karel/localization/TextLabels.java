@@ -18,6 +18,8 @@ public interface TextLabels {
 
     String karelCodeErrorTitle();
     String karelCodeErrorMessage();
+    String noBeepersErrorMessage();
+    String wallCollisionErrorMessage();
 
     String textFieldReset();
     String textFieldRunning();

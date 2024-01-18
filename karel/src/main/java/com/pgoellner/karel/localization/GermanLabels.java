@@ -37,6 +37,16 @@ public class GermanLabels implements TextLabels {
     }
 
     @Override
+    public String noBeepersErrorMessage() {
+        return "Keine Beeper zum Aufheben";
+    }
+
+    @Override
+    public String wallCollisionErrorMessage() {
+        return "Oh nein, eine Wand";
+    }
+
+    @Override
     public String textFieldReset() {
         return "Programm zurückgesetzt";
     }

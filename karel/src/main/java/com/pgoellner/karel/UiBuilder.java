@@ -1,7 +1,7 @@
 package com.pgoellner.karel;
 
 import com.pgoellner.karel.errors.CouldNotGetLookAndFeel;
-import com.pgoellner.karel.errors.WallCollision;
+import com.pgoellner.karel.errors.KarelError;
 import com.pgoellner.karel.localization.TextLabels;
 import com.pgoellner.karel.parse.WorldFileParser;
 
@@ -145,8 +145,8 @@ class KarelButtonListener implements ActionListener {
                     textField.displayRunning();
                     program.run();
                     textField.displaySucceeded();
-                } catch (WallCollision collision) {
-                    display(collision);
+                } catch (KarelError error) {
+                    display(error);
                 } finally {
                     running = false;
                 }
@@ -173,6 +173,7 @@ class KarelButtonListener implements ActionListener {
                         stackTraceElement -> {
                             final String className = stackTraceElement.getClassName();
                             return !className.equals("com.pgoellner.karel.KarelButtonListener") &&
+                                    !className.equals("com.pgoellner.karel.World") &&
                                     !className.equals("com.pgoellner.karel.Karel") &&
                                     !className.equals("java.lang.Thread");
                         }
@@ -185,7 +186,7 @@ class KarelButtonListener implements ActionListener {
 
         JOptionPane.showMessageDialog(
                 window,
-                String.format(UiBuilder.labels.karelCodeErrorMessage(), errorClass, errorLineNumber),
+                String.format(UiBuilder.labels.karelCodeErrorMessage(), error.getMessage(), errorClass, errorLineNumber),
                 UiBuilder.labels.karelCodeErrorTitle(),
                 JOptionPane.ERROR_MESSAGE);
     }

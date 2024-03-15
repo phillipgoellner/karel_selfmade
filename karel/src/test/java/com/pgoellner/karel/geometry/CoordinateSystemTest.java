@@ -2,6 +2,7 @@ package com.pgoellner.karel.geometry;
 
 import com.pgoellner.karel.ArgumentList;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -108,6 +109,30 @@ class CoordinateSystemTest {
                 new Coordinates(2, 3),
                 new Coordinates(1, 3),
                 new Coordinates(2, 2)
+        );
+
+        Assertions.assertEquals(
+                expectedCoordinates,
+                rotatedCoordinates
+        );
+    }
+
+    @Test
+    void rotate_45_degrees() {
+        List<Coordinates> givenCoordinates = ArgumentList.of(
+                new Coordinates(2, 0),
+                new Coordinates(4, 1)
+        );
+
+        List<Coordinates> rotatedCoordinates = CoordinateSystem.rotate(
+                new Coordinates(0, 0),
+                givenCoordinates,
+                45
+        );
+
+        List<Coordinates> expectedCoordinates = ArgumentList.of(
+                new Coordinates(1, 1),
+                new Coordinates(2, 3)
         );
 
         Assertions.assertEquals(

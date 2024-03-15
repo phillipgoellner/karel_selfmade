@@ -9,6 +9,8 @@ public final class ArgumentList {
 
     @SafeVarargs
     public static <E> List<E> of(E... elements) {
+        if (elements == null)
+            return Stream.<E>of().collect(Collectors.toList());
         return Stream.of(elements).collect(Collectors.toList());
     }
 }

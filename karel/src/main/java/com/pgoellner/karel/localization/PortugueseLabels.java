@@ -1,19 +1,19 @@
 package com.pgoellner.karel.localization;
 
-public final class GermanLabels implements TextLabels {
+public final class PortugueseLabels implements TextLabels {
     @Override
     public String welcomeMessage() {
-        return "Willkommen bei Karel!";
+        return "Bem vindo a Karel!";
     }
 
     @Override
     public String speedSliderTitle() {
-        return "  Karels Geschwindigkeit";
+        return "  velocidade de Karel";
     }
 
     @Override
     public String startButtonText() {
-        return "Programm starten";
+        return "Iniciar o programa";
     }
 
     @Override
@@ -23,46 +23,46 @@ public final class GermanLabels implements TextLabels {
 
     @Override
     public String moreWorldsButtonText() {
-        return "Weitere Welten";
+        return "Outros mundos";
     }
 
     @Override
     public String karelCodeErrorTitle() {
-        return "Fehler D:";
+        return "Erro D:";
     }
 
     @Override
     public String karelCodeErrorMessage() {
-        return "Fehler!\nVermutlich entstanden in %s Zeile %d";
+        return "Erro!\nProvavelmente em %s na linha %d";
     }
 
     @Override
     public String noBeepersErrorMessage() {
-        return "Keine Beeper zum Aufheben";
+        return "Nao tem Beeper pra collecionar";
     }
 
     @Override
     public String wallCollisionErrorMessage() {
-        return "Oh nein, eine Wand";
+        return "Xiii, uma parede";
     }
 
     @Override
     public String textFieldReset() {
-        return "Programm zurückgesetzt";
+        return "Restaurar o programa";
     }
 
     @Override
     public String textFieldRunning() {
-        return "Läuft...";
+        return "Rodando...";
     }
 
     @Override
     public String textFieldSuccess() {
-        return "Fertig!";
+        return "Pronto!";
     }
 
     @Override
     public String textFieldError() {
-        return "Fehler :(";
+        return "Erro :(";
     }
 }

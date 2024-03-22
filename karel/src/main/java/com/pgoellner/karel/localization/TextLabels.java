@@ -6,6 +6,7 @@ public interface TextLabels {
     static TextLabels systemDefaults() {
         switch (Locale.getDefault().getLanguage()) {
             case "de": return new GermanLabels();
+            case "pt": return new PortugueseLabels();
             default: return new EnglishLabels();
         }
     }

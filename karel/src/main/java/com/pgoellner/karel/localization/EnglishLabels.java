@@ -1,6 +1,6 @@
 package com.pgoellner.karel.localization;
 
-public class EnglishLabels implements TextLabels {
+public final class EnglishLabels implements TextLabels {
     @Override
     public String welcomeMessage() {
         return "Welcome to Karel!";

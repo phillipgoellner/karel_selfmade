@@ -7,7 +7,7 @@ import com.pgoellner.karel.geometry.Orientation;
 import com.pgoellner.karel.parse.WorldFileParser;
 import com.pgoellner.karel.parse.WorldInformationProvider;
 
-public class Karel {
+public abstract class Karel {
     private static final KarelSpeedSetting speedSetting = new KarelSpeedSetting(5);
     private Location<Orientation> startingLocation;
 
@@ -17,7 +17,7 @@ public class Karel {
     private World world;
 
 
-    public Karel() {
+    protected Karel() {
         this(new World(5, 5), new Coordinates(1, 1), Orientation.EAST);
     }
 

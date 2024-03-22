@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class WorldFileParser {
+public class WorldFileParser implements WorldInformationProvider {
     private List<String> lines;
 
     private static final String karelLineHeading = "Karel: (";

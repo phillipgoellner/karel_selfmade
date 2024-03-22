@@ -4,6 +4,7 @@ import com.pgoellner.karel.errors.CouldNotGetLookAndFeel;
 import com.pgoellner.karel.errors.KarelError;
 import com.pgoellner.karel.localization.TextLabels;
 import com.pgoellner.karel.parse.WorldFileParser;
+import com.pgoellner.karel.parse.WorldInformationProvider;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -204,7 +205,7 @@ class KarelButtonListener implements ActionListener {
         int returnVal = fc.showOpenDialog(window);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            WorldFileParser parser = new WorldFileParser(fc.getSelectedFile().getAbsolutePath());
+            WorldInformationProvider parser = new WorldFileParser(fc.getSelectedFile().getAbsolutePath());
             World newWorld = parser.fromDescription();
             this.world = newWorld;
             Karel.setGameState(program, newWorld, parser);

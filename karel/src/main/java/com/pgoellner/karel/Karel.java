@@ -5,6 +5,7 @@ import com.pgoellner.karel.geometry.Coordinates;
 import com.pgoellner.karel.geometry.Location;
 import com.pgoellner.karel.geometry.Orientation;
 import com.pgoellner.karel.parse.WorldFileParser;
+import com.pgoellner.karel.parse.WorldInformationProvider;
 
 public class Karel {
     private static final KarelSpeedSetting speedSetting = new KarelSpeedSetting(5);
@@ -33,7 +34,7 @@ public class Karel {
 
         String worldFileName = programName.replace("com.pgoellner.karel.", "");
 
-        WorldFileParser parser = new WorldFileParser(
+        WorldInformationProvider parser = new WorldFileParser(
                 String.format("worlds/%s.w", worldFileName)
         );
         World world = parser.fromDescription();
@@ -61,7 +62,7 @@ public class Karel {
         return (Karel) Class.forName(fromProgramName).newInstance();
     }
 
-    static void setGameState(Karel karel, World world, WorldFileParser parser) {
+    static void setGameState(Karel karel, World world, WorldInformationProvider parser) {
         karel.world = world;
         karel.currentLocation = parser.karelStartingPoint();
         karel.currentOrientation = parser.karelStartingOrientation();

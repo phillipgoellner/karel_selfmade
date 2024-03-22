@@ -1,24 +1,13 @@
 package com.pgoellner.karel.geometry;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CoordinateSystem {
     private final Coordinates furthestCorner;
 
-    private final List<Coordinates> allCoordinates;
-
-    public CoordinateSystem(Coordinates origin, Coordinates furthestCorner) {
+    public CoordinateSystem(Coordinates furthestCorner) {
         this.furthestCorner = furthestCorner;
-
-        this.allCoordinates = new ArrayList<>();
-
-        for (int x = origin.x; x <= furthestCorner.x; x++) {
-            for (int y = origin.y; y <= furthestCorner.y; y++) {
-                this.allCoordinates.add(new Coordinates(x, y));
-            }
-        }
     }
 
     public int xLimit() {
@@ -27,10 +16,6 @@ public class CoordinateSystem {
 
     public int yLimit() {
         return furthestCorner.y;
-    }
-
-    public List<Coordinates> allCoordinates() {
-        return new ArrayList<>(this.allCoordinates);
     }
 
     public static List<Coordinates> rotate(Coordinates centreOfRotation, List<Coordinates> pointsToRotate, int degrees) {

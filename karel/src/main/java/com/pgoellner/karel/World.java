@@ -33,7 +33,7 @@ public final class World {
     public World(int x, int y, List<Location<Orientation>> walls, List<Coordinates> beepers, List<Location<Color>> colours) {
         originalState = new BackupWorld(walls, beepers);
 
-        expanse = new CoordinateSystem(new Coordinates(1, 1), new Coordinates(x, y));
+        expanse = new CoordinateSystem(new Coordinates(x, y));
 
         this.walls = walls;
         this.beepers = new HashMap<>();

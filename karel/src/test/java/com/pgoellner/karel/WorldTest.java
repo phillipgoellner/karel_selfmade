@@ -87,6 +87,9 @@ class WorldTest {
 
     @Test
     void error_when_trying_to_remove_a_non_existing_beeper() {
-        Assertions.assertThrows(NoBeeperPresent.class, () -> new World(3, 3).removeBeeper(new Coordinates(1, 1)));
+        final World world = new World(3, 3);
+        final Coordinates location = new Coordinates(1, 1);
+
+        Assertions.assertThrows(NoBeeperPresent.class, () -> world.removeBeeper(location));
     }
 }

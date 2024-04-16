@@ -29,7 +29,7 @@ public abstract class Karel {
         this.world = world;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static final void main(String[] args) throws Exception {
         String programName = determineProgramName();
 
         String worldFileName = programName.replace("com.pgoellner.karel.", "");

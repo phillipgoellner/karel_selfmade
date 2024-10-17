@@ -3,6 +3,7 @@ package com.pgoellner.karel.architecture;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.library.freeze.FreezingArchRule;
 import org.junit.jupiter.api.Test;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
@@ -12,8 +13,11 @@ class Karel {
 
     @Test
     void should_be_decoupled() {
-        ArchRule rule = noClasses()
-                .should().dependOnClassesThat().resideInAPackage("..localization..");
+        ArchRule rule = FreezingArchRule.freeze(noClasses()
+                .should().dependOnClassesThat().resideInAnyPackage(
+                        "..localization..",
+                        "..parse.."
+                ));
 
         rule.check(karel);
     }
